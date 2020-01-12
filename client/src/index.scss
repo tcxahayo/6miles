@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html, body {
+  background: #f4f5f5;
+  min-width: 1020px;
+}
+button, input {
+  outline: unset;
+}
+ul li {
+  list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: unset;
+}
+#root {
+  overflow: auto;
+}

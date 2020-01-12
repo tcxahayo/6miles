@@ -1,0 +1,25 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {AppContainer} from 'react-hot-loader';
+import AppRouter from '@/router';
+import '@/style/iconfont.scss';
+import './index.scss';
+
+// css热更新
+const render = (Component: React.FC) => {
+  ReactDOM.render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById("root")
+  );
+};
+
+render(AppRouter);
+
+declare const module: any;
+if (module.hot) {
+  module.hot.accept('@/router/', () => {
+    render(AppRouter);
+  });
+}

@@ -1,0 +1,94 @@
+.c_header_container {
+  height: 55px;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  z-index: 400;
+  transition: all 100ms;
+
+  .row {
+    height: 100%;
+    display: flex;
+    color: #333;
+    align-items: center;
+    // logo
+    .logo {
+      width: 200px;
+      font-size: 100px;
+    }
+
+    // 搜索
+    .search {
+      height: 30px;
+      border-radius: 15px;
+      border: 1px solid #bdbdbd;
+      overflow: hidden;
+      display: flex;
+
+      .icon {
+        margin-left: 10px;
+      }
+      .left {
+        height: 100%;
+        border-right: 1px solid #bdbdbd;
+        .input {
+          height: 100%;
+          border: unset;
+          width: 200px;
+          padding: 0 10px;
+        }
+      }
+      .right {
+        height: 100%;
+        .location {
+          width: 150px;
+          height: 100%;
+          line-height: 28px;
+          padding: 0 30px 0 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          cursor: pointer;
+        }
+      }
+      .btn {
+        height: 100%;
+        width: 100px;
+      }
+    }
+    // 右侧菜单
+    .right {
+      height: 100%;
+      margin-left: auto;
+      align-items: center;
+      display: flex;
+
+      .btn {
+        width: 150px;
+        margin-right: 50px;
+      }
+      .menu {
+        border: unset;
+        line-height: 55px;
+        color: inherit;
+
+        .item {
+          border: unset;
+          padding: 0 10px;
+        }
+        .submenu-title-wrapper {
+          color: inherit;
+          border: unset;
+          display: flex;
+          align-items: center;
+          .icon {
+            font-size: 28px;
+          }
+          .avatar {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
