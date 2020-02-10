@@ -1,6 +1,6 @@
-package com.bs.server.common.utils;
+package com.bs.common.utils;
 
-import com.bs.server.common.constants.CommonConstant;
+import com.bs.common.constants.CommonConstant;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,23 +12,23 @@ import java.io.Serializable;
 @Data
 public class R<T> implements Serializable {
 
-    private Integer code;
+    private Integer status;
     private String msg;
     private T data;
 
-    public R(Integer code, String msg) {
-        this.code = code;
+    public R(Integer status, String msg) {
+        this.status = status;
         this.msg = msg;
     }
 
     public R(T data, String msg) {
-        this.code = CommonConstant.SUCCESS;
+        this.status = CommonConstant.SUCCESS;
         this.data = data;
         this.msg = msg;
     }
 
-    public R(Integer code, String msg, T data) {
-        this.code = code;
+    public R(Integer status, String msg, T data) {
+        this.status = status;
         this.msg = msg;
         this.data = data;
     }

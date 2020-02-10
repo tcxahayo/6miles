@@ -1,4 +1,4 @@
-package com.bs.server.common.exception;
+package com.bs.common.exception;
 
 /**
  *  自定义异常类

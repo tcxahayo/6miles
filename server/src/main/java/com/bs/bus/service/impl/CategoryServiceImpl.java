@@ -1,10 +1,16 @@
 package com.bs.bus.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bs.bus.entity.Category;
 import com.bs.bus.mapper.CategoryMapper;
 import com.bs.bus.service.ICategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bs.common.exception.GlobalException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -16,5 +22,35 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements ICategoryService {
+    @Override
+    public void addCategory(String parentId, String title, String icon, Integer sort) throws GlobalException {
+        Category category = new Category();
+        category.setParentId(parentId);
+        category.setTitle(title);
+        category.setIcon(icon);
+        category.setSort(sort);
+        boolean result = this.save(category);
+        if (!result) {
+            throw new GlobalException("添加失败");
+        }
+    }
 
+    @Override
+    public List<Category> getCategory() throws GlobalException {
+        Wrapper<Category> wrapper = new QueryWrapper<Category>().orderByAsc("sort");
+        List<Category> categories = this.list(wrapper);
+        return treeCategoryData("0", categories);
+    }
+
+    private List<Category> treeCategoryData(String parentId, List<Category> categories) {
+        List<Category> parentList = categories.stream().filter(x -> parentId.equals(x.getParentId())).collect(Collectors.toList());
+        categories = categories.stream().filter(x -> !parentId.equals(x.getParentId())).collect(Collectors.toList());
+        if (categories.size() == 0) {
+            return parentList;
+        }
+        for (Category c : parentList) {
+            c.setChildren(treeCategoryData(c.getId(), categories));
+        }
+        return parentList;
+    }
 }

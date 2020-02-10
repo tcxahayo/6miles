@@ -1,4 +1,13 @@
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://182.92.210.231:3306/6miles?characterEncoding=utf8
+  redis:
+    host: 182.92.210.231
+    port: 6379
+    password: root
+
+swagger:
+  show: true

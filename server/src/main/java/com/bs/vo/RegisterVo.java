@@ -1,4 +1,4 @@
-package com.bs.dto;
+package com.bs.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +10,16 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class RegisterDto {
-    @NotNull
-    private String email;
+public class RegisterVo {
+    @NotNull(message = "手机号不能为空")
+    private String phone;
 
-    @NotNull
+    @NotNull(message = "密码不能为空")
     private String password;
 
-    @NotNull
+    @NotNull(message = "昵称不能为空")
     private String nickName;
+
+    @NotNull(message = "验证码不能为空")
+    private String code;
 }

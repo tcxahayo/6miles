@@ -1,8 +1,10 @@
-package com.bs.server.common.handler;
+package com.bs.common.handler;
 
-import com.bs.server.common.constants.CommonConstant;
-import com.bs.server.common.exception.GlobalException;
-import com.bs.server.common.utils.R;
+import com.bs.common.utils.R;
+import com.bs.common.constants.CommonConstant;
+import com.bs.common.exception.GlobalException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -21,6 +23,15 @@ public class GlobalExceptionHandler {
     public R exceptionHandle(Exception e) {
         e.printStackTrace();
         return new R(CommonConstant.ERROR, e.getMessage());
+    }
+
+    /**
+     * 参数异常处理
+     * @return
+     */
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public R exceptionHandle() {
+        return new R(401, "参数不正确");
     }
 
     /**

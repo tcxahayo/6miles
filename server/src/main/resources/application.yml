@@ -1,1 +1,32 @@
+# 端口
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
 
+# 指定配置文件
+# 规则：application-{profile}.yml
+spring:
+  profiles:
+    active: dev
+
+# mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/*/*.xml
+  type-aliases-package: com.bs.system.entity
+  global-config:
+    db-config:
+      id-type: UUID
+
+# 阿里云配置
+aliyun:
+  access-key-id: LTAI4FusXAFDEhyiZ5Pq69aS
+  access-secret: N1Z1PX4OQFoLUD9JehkFWiBivkeVFy
+  # 短信配置
+  sms:
+    action: SendSms
+    domain: dysmsapi.aliyuncs.com
+    version: 2017-05-25
+    regionId: cn-hangzhou
+    SignName: 6miles二手交易平台
+    TemplateCode: SMS_183195332

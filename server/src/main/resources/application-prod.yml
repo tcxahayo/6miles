@@ -1,6 +1,13 @@
 spring:
   datasource:
-    name: root
+    username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/blog?characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/6miles?characterEncoding=utf8
+  redis:
+    host: 192.0.0.1
+    port: 6379
+    password: root
+
+swagger:
+  show: false

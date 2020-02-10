@@ -1,5 +1,6 @@
 package com.bs.system.service;
 
+import com.bs.common.exception.GlobalException;
 import com.bs.system.entity.SysCode;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysCodeService extends IService<SysCode> {
 
+    /**
+     * 发送短信验证码
+     * @param phone 手机号
+     * @throws GlobalException 异常
+     */
+    void sendCode(String phone) throws GlobalException;
 }

@@ -1,4 +1,4 @@
-package com.bs.server.common.constants;
+package com.bs.common.constants;
 
 
 import lombok.AllArgsConstructor;
