@@ -1,17 +1,22 @@
 .c_goods_container{
-overflow: auto;
 display: inline-block;
+vertical-align: top;
 .box{
   width: 200px;
   height: auto;
   background: #fff;
   border-radius: 5px;
-  border: 1px solid #E9E9E9;
   margin-top: 20px;
+  overflow: hidden;
   padding-bottom: 20px;
   position: relative;
   margin-right: 10px;
-  float: left;
+  box-shadow: 0 0 4px 0 #636972;
+  transition: all 200ms;
+  &:hover{
+    box-shadow: 0 0 15px 0 #999;
+    transform: scale(1.05);
+  }
   .img1{
     width: 100%;
   }
