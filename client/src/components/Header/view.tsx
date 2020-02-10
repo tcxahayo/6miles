@@ -4,12 +4,14 @@ import {Link, useHistory} from 'react-router-dom';
 import {throttling} from '@/lib/loadsh'
 import './view.scss';
 
+
 const Header: React.FC = () => {
 
   const [isLogin, setIsLogin] = useState(false);
   const [scrollIsTop, setScrollIsTop] = useState(true);
   const [value, setValue] = useState('');
   const history = useHistory();
+  const [isRegister, setIsRegister] = useState(false);
 
   function search(e: FormEvent) {
     e.preventDefault()
@@ -38,7 +40,7 @@ const Header: React.FC = () => {
   const loginMenu = useMemo(() => {
     return (
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
-        <Menu.Item className="item">注册</Menu.Item>
+        <Menu.Item className="item" onClick={()=>{setIsRegister(true)}}>注册</Menu.Item>
         <Menu.Item className="item" onClick={() => {setIsLogin(true)}}>登陆</Menu.Item>
       </Menu>
     )

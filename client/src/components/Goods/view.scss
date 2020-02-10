@@ -1,0 +1,81 @@
+.c_goods_container{
+overflow: auto;
+display: inline-block;
+.box{
+  width: 200px;
+  height: auto;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #E9E9E9;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  margin-right: 10px;
+  float: left;
+  .img1{
+    width: 100%;
+  }
+  .icon{
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .icon1{
+    color: #CE4141 !important;
+  }
+  .price{
+    padding-left: 10px;
+    margin-top: 10px;
+    color: #656565;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: .27px;
+  }
+  .name{
+    padding-left: 10px;
+    color: #656565;
+    font-size: 12px;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+  }
+  .line{
+    width: 100%;
+    border: 1px solid #e9e9e9;
+    margin-top: 10px;
+  }
+  .user{
+    margin-top: 10px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #e9e9e9;
+    padding-top: 10px;
+    .avatar{
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    .info{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 10px;
+      .userName{
+        color: #656565;
+        font-size: 14px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .address{
+        color: #656565;
+        font-size: 14px;
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}
+}
