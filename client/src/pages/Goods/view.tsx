@@ -5,6 +5,7 @@ import bg1 from "../../imges/dash3.jpg";
 import Product from '@/components/Goods';
 import Masonry from 'react-masonry-component';
 import { Carousel } from 'antd';
+import { Link } from 'react-router-dom';
 
 
 
@@ -23,9 +24,11 @@ const Goods: React.FC = () => {
       </div>
 
       <Masonry>
+        <Link to="/GoodsDetail">
         <Product
           img="https://tse1-mm.cn.bing.net/th?id=OIP.1e3YVW946dgy5uJH764JXwHaFj&w=141&h=106&c=8&rs=1&qlt=90&pid=3.1&rm=2"
         />
+        </Link>
         <Product
           img="https://tse1-mm.cn.bing.net/th?id=OIP.opxQknlPxAYvWSy4RQw8nwHaFC&w=156&h=106&c=8&rs=1&qlt=90&pid=3.1&rm=2"
         />
