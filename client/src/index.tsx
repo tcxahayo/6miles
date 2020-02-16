@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
+import {Provider} from 'react-redux';
+import store from './store';
 import AppRouter from '@/router';
 import '@/style/iconfont.scss';
 import './index.scss';
@@ -9,7 +11,9 @@ import './index.scss';
 const render = (Component: React.FC) => {
   ReactDOM.render(
     <AppContainer>
-      <Component />
+      <Provider store={store}>
+        <Component />
+      </Provider>
     </AppContainer>,
     document.getElementById("root")
   );

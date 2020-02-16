@@ -1,12 +1,14 @@
 import React, {useState, useMemo, useEffect, FormEvent} from 'react';
 import {Menu, Button, Icon, Avatar} from 'antd';
 import {Link, useHistory} from 'react-router-dom';
-import {throttling} from '@/lib/loadsh'
+import {throttling} from '@/lib/loadsh';
+import {useDispatch} from 'react-redux';
+import {actions} from '@/pages/App/store';
 import './view.scss';
 
 
 const Header: React.FC = () => {
-
+  const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
   const [scrollIsTop, setScrollIsTop] = useState(true);
   const [value, setValue] = useState('');
@@ -35,13 +37,16 @@ const Header: React.FC = () => {
     }
   }, [])
 
+  function showLoginModal() {
+    dispatch(actions.changeLoginModalAction());
+  }
 
   // 未登陆菜单
   const loginMenu = useMemo(() => {
     return (
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
         <Menu.Item className="item" onClick={()=>{setIsRegister(true)}}>注册</Menu.Item>
-        <Menu.Item className="item" onClick={() => {setIsLogin(true)}}>登陆</Menu.Item>
+        <Menu.Item className="item" onClick={showLoginModal}>登陆</Menu.Item>
       </Menu>
     )
   }, []);
