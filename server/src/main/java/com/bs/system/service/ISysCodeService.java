@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author tcx
  * @since 2020-02-06
  */
+
 public interface ISysCodeService extends IService<SysCode> {
 
     /**

@@ -101,8 +101,12 @@
 			<version>1.2.62</version>
 		</dependency>
 
-
-
+		<!-- ftp -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.6</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

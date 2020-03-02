@@ -1,5 +1,7 @@
 package com.bs.common.jwt;
 
+import com.bs.common.constants.CommonConstant;
+import com.bs.common.exception.AuthenticationException;
 import com.bs.common.exception.GlobalException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -24,33 +26,33 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         HandlerMethod handlerMethod=(HandlerMethod)handler;
         Method method = handlerMethod.getMethod();
         //检查是否有RequiresAuthentication注释，若没有则直接跳过认证
-        if (!method.isAnnotationPresent(RequiresAuthentication.class)) {
+        if (!method.isAnnotationPresent(Authentication.class)) {
             return true;
         }
-        RequiresAuthentication requiresAuthentication = method.getAnnotation(RequiresAuthentication.class);
+        Authentication authentication = method.getAnnotation(Authentication.class);
         // 检查注解的value是否为true，若是false，直接跳过认证
-        if (!requiresAuthentication.value()) {
+        if (!authentication.value()) {
             return true;
         }
         // 从 http 请求头中取出 token
-        String token = request.getHeader("token");
+        String token = request.getHeader(CommonConstant.AUTHORIZATION_FLAG);
         if (token == null) {
-            throw new GlobalException("身份校验失败");
+            throw new AuthenticationException("身份校验失败");
         }
         // 从token中获取到账户信息
         String account = JwtUtil.getAccount(token);
         if (account == null) {
-            throw new GlobalException("token失效");
+            throw new AuthenticationException("身份校验失败");
         }
         String userId = JwtUtil.getUserId(token);
         if (userId == null) {
-            throw new GlobalException("token失效");
+            throw new AuthenticationException("身份校验失败");
         }
         // 校验token是否正确
         try {
             JwtUtil.verify(token, account, userId);
         } catch (Exception e) {
-            throw new GlobalException("token失效");
+            throw new AuthenticationException("身份校验失败");
         }
         return true;
     }

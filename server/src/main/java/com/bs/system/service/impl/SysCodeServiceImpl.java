@@ -28,6 +28,7 @@ public class SysCodeServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> impl
 
     @Override
     public void sendCode(String phone) throws GlobalException {
+
         QueryWrapper<SysCode> queryWrapper = new QueryWrapper<SysCode>().eq("phone", phone);
         SysCode sysCode = this.getOne(queryWrapper);
 

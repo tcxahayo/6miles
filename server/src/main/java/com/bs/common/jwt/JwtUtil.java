@@ -13,7 +13,7 @@ public class JwtUtil {
     /**
      * JWT验证过期时间 EXPIRE_TIME 分钟
      */
-    private static final long EXPIRE_TIME = 30 * 60 * 1000;
+    private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 
     /**
      * token密钥

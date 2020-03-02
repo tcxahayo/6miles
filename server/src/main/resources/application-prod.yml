@@ -3,7 +3,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/6miles?characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/6miles?useUnicode=true&useJDBCCompliantTimezoneShift=true&characterEncoding=utf8&serverTimezone=GMT%2B8
   redis:
     host: 192.0.0.1
     port: 6379

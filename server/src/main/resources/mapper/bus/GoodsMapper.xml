@@ -2,4 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bs.bus.mapper.GoodsMapper">
 
+    <resultMap id="goodsListResult" type="goods">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="price" property="price" />
+        <result column="images" property="images" />
+        <result column="desc" property="desc" />
+        <result column="area" property="area" />
+        <result column="collection" property="collection" />
+        <result column="createDate" property="createDate" />
+        <result column="updateDate" property="updateDate" />
+        <association property="user">
+            <result column="avatar" property="avatar" />
+            <result column="nickname" property="nickname" />
+            <result column="remake" property="remake" />
+        </association>
+    </resultMap>
+
+    <sql id="header">
+        select g.*, u.*, c.id collection
+        from bus_goods g inner join sys_user u on g.userId = u.id
+        left join bus_collect c on c.goodsId = g.id and c.userId = #{userId}
+    </sql>
+    <sql id="footer">
+
+    </sql>
+
+    <!--  查询商品列表  -->
+    <select id="selectGoodsList" resultMap="goodsListResult" parameterType="map">
+        <include refid="header" />
+        where 1 = 1
+        <if test="status != null">
+            and g.status = #{status}
+        </if>
+        -- 商品id
+        <if test="goodsId != null">
+            and g.id = #{goodsId}
+        </if>
+        order by g.createDate desc
+    </select>
+
+    <!--  查询出售列表  -->
+    <select id="selectSellGoodsList" resultMap="goodsListResult" parameterType="string">
+        <include refid="header" />
+        where g.userId = #{id}
+        order by g.createDate desc
+    </select>
+
+
+    <!--  查询收藏列表  -->
+    <select id="selectCollectGoods" resultMap="goodsListResult" parameterType="string">
+        <include refid="header" />
+        right join bus_collect bc on g.id = bc.goodsId
+        where bc.userId = #{userId}
+        order by bc.createDate desc
+    </select>
 </mapper>

@@ -6,7 +6,9 @@ import com.bs.bus.entity.Category;
 import com.bs.bus.mapper.CategoryMapper;
 import com.bs.bus.service.ICategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bs.bus.vo.CategoryVo;
 import com.bs.common.exception.GlobalException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements ICategoryService {
     @Override
-    public void addCategory(String parentId, String title, String icon, Integer sort) throws GlobalException {
+    public void addCategory(CategoryVo categoryVo) throws Exception {
         Category category = new Category();
-        category.setParentId(parentId);
-        category.setTitle(title);
-        category.setIcon(icon);
-        category.setSort(sort);
+        BeanUtils.copyProperties(categoryVo, category);
         boolean result = this.save(category);
         if (!result) {
             throw new GlobalException("添加失败");
@@ -36,7 +35,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public List<Category> getCategory() throws GlobalException {
+    public List<Category> getCategory() throws Exception {
         Wrapper<Category> wrapper = new QueryWrapper<Category>().orderByAsc("sort");
         List<Category> categories = this.list(wrapper);
         return treeCategoryData("0", categories);
