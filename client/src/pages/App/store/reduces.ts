@@ -4,7 +4,8 @@ import {IState} from './index';
 
 let initState = {
   loginModal: false, // 登陆框是否显示
-  registerModal: false // 注册框是否显示
+  registerModal: false, // 注册框是否显示
+  userInfo: null // 用户信息
 }
 
 export default function app(state: IState = initState, action: actions.Type) {
@@ -12,7 +13,12 @@ export default function app(state: IState = initState, action: actions.Type) {
     return Object.assign({}, state, {loginModal: !state.loginModal})
   }
   if (action.type === actionTypes.CHANGE_REGISTER_MODAL) {
-    return Object.assign({}, state, {loginModal: !state.registerModal})
+    return Object.assign({}, state, {registerModal: !state.registerModal})
+  }
+  if (action.type === actionTypes.SET_USER_INFO)  {
+    return Object.assign({}, state, {
+      userInfo: action.value
+    })
   }
   return state;
 }

@@ -1,0 +1,217 @@
+.edit_container{
+  width: 70%;
+  margin: auto;
+  background: #fff;
+  margin-top: 20px;
+  min-height: 100vh;
+  padding-top: 40px;
+  .top_muen{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    .item1{
+      border: 1px solid #E6E6E6;
+      padding: 0 40px;
+      color: #747474;
+      border-radius: 5px;
+      font-size: 16px;
+      line-height: 38px;
+      height: 38px;
+      margin-left: 50px;
+      margin-right: 20px;
+    }
+    .item2{
+      border: 1px solid #E6E6E6;
+      padding: 0 40px;
+      color: #747474;
+      border-radius: 5px;
+      font-size: 16px;
+      line-height: 38px;
+      height: 38px;
+    }
+    .active{
+      background: #1890ff;
+      color: #fff;
+    }
+  }
+  .line{
+    width: 100%;
+    height: 4px;
+    background: #F4F5F5;
+  }
+  .personal{
+    padding-top: 30px;
+    padding-top: 40px;
+    padding-left: 50px;
+    .personal_title{
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .avater{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .avater_one{
+        font-size: 16px;
+        font-weight: normal;
+        width: 10%;
+        text-align: center;
+      }
+      .avater_img{
+        display: flex;
+        align-items: center;
+        margin-left: 40px;
+        .img1{
+          width: 100px;
+        }
+        .avater_upload{
+          margin-left: 20px;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          .avater_btu{
+            color: #fff;
+            border-radius: 4px;
+            background: #008FFF;
+            padding: 4px 10px;
+            width: 100px;
+            margin-top: 10px;
+            border: none !important;
+          }
+        }
+      }
+    }
+    .name{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .username{
+        font-size: 16px;
+        font-weight: normal;
+        width: 10%;
+        text-align: center;
+      }
+      .input_name{
+        margin-left: 40px;
+        border: none;
+        border-bottom: 1px solid #d9d9d9;
+        width: 40%;
+        &:focus{
+          outline: none !important;
+          box-shadow: none !important;
+        }
+      }
+      .icno{
+        width: 35%;
+        text-align: end;
+        color: #008FFF;
+        font-size: 20px !important;
+      }
+    }
+    .email{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .email_txt{
+        font-size: 16px;
+        font-weight: normal;
+        width: 10%;
+        text-align: center;
+      }
+      .input_name{
+        margin-left: 40px;
+        border: none;
+        border-bottom: 1px solid #d9d9d9;
+        width: 40%;
+        &:focus{
+          outline: none !important;
+          box-shadow: none !important;
+        }
+      }
+      .icno{
+        width: 35%;
+        text-align: end;
+        color: #008FFF;
+        font-size: 20px !important;
+      }
+    }
+  }
+  .editPassword{
+    padding-top: 30px;
+    padding-top: 40px;
+    padding-left: 50px;
+    .password_title{
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .old_password{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .old_title{
+        width: 10%;
+        text-align: center;
+      }
+      .input_old{
+        width: 50%;
+      }
+    }
+    .new_password{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .new_title{
+        width: 10%;
+        text-align: center;
+      }
+      .input_new{
+        width: 50%;
+      }
+    }
+    .again_password{
+      display: flex;
+      margin-top: 30px;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 30px;
+      align-items: center;
+      .again_title{
+        width: 10%;
+        text-align: center;
+      }
+      .input_again{
+        width: 50%;
+      }
+    }
+  }
+  .sumit{
+    background: #1890FF;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 60px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 10px;
+  }
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  height: auto;
+  border: none !important;
+  margin-bottom: 0 !important;
+}

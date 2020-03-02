@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-export type Type = Action;
+export type Type = Action | UserinfoAction;
 
 export interface Action {
   type: actionTypes.CHANGE_LOGIN_MODAL | actionTypes.CHANGE_REGISTER_MODAL
@@ -13,3 +13,13 @@ export const changeLoginModalAction = (): Action => ({
 export const changeRegisterModalAction = (): Action => ({
   type: actionTypes.CHANGE_REGISTER_MODAL,
 });
+
+export interface UserinfoAction {
+  value: any,
+  type: actionTypes.SET_USER_INFO
+}
+ //存取用户信息
+ export const setUserInfo = (value:any) => ({
+   type: actionTypes.SET_USER_INFO,
+   value:value
+ });

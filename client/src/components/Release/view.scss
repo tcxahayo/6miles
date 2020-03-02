@@ -1,0 +1,128 @@
+.c_relese_container{
+  width: 70%;
+  margin: auto;
+  background: #fff;
+  padding-bottom: 20px;
+.classify{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  .choise{
+    border: 1px solid #1890ff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  }
+  .classTxt{
+    margin: 0 10px;
+  }
+  .class_content{
+    width: 500px;
+    .cascader{
+      width: 100%;
+    }
+  }
+}
+.goods_name{
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  .choise{
+    border: 1px solid #1890ff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  }
+  .name{
+    margin: 0 10px;
+  }
+  .nameInput{
+    width: 500px;
+    margin-left: 10px;
+    .input{
+      width: 100%;
+    }
+  }
+}
+.goods_price{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  .choise{
+    border: 1px solid #1890ff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  }
+  .price{
+    margin: 0 15px;
+  }
+  .price_input{
+    width: 500px;
+    margin-left: 18px;
+    .input{
+      width: 100%;
+    }
+  }
+}
+.goods_desc{
+  padding: 10px;
+  display: flex;
+  .choise{
+    border: 1px solid #1890ff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  }
+  .desc{
+    margin: 0 10px;
+  }
+  .desc_input{
+    width: 500px;
+    .input{
+      width: 100%;
+    }
+  }
+}
+.goods_picture{
+  padding: 10px;
+  display: flex;
+  .choise{
+    border: 1px solid #1890ff;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  }
+  .name{
+    margin: 0 10px;
+  }
+  .picture_box{
+    width: 800px;
+    min-height: 200px;
+    background: #F4F5F5;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+}
+.bottom{
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  .canle{
+    font-size: 12px;
+    margin-right: 10px;
+    color: rgba(38,38,38,0.5);
+  }
+  .submit{
+    font-size: 14px;
+    height: 25px;
+    background: #1890FF;
+    line-height: 25px;
+    padding: 0 6px;
+    border-radius: 5px;
+    margin-right: 40px;
+    color: #fff;
+  }
+}
+}

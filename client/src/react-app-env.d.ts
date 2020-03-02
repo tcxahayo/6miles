@@ -9,6 +9,8 @@ declare namespace NodeJS {
   }
 }
 
+declare const BMap: any;
+
 declare module '*.bmp' {
   const src: string;
   export default src;

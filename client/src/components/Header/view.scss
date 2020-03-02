@@ -14,7 +14,11 @@
     // logo
     .logo {
       width: 200px;
-      font-size: 100px;
+      text-align: center;
+      .logoImg{
+        height: 40px;
+        width: 130px;
+      }
     }
 
     // 搜索
@@ -59,7 +63,7 @@
     // 右侧菜单
     .right {
       height: 100%;
-      margin-left: auto;
+      margin-left: 100px;
       align-items: center;
       display: flex;
 
