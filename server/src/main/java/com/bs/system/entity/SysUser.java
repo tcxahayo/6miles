@@ -1,5 +1,6 @@
 package com.bs.system.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -44,6 +45,11 @@ public class SysUser extends BaseEntity {
     private String password;
 
     /**
+     * 密码加密盐
+     */
+    private String salt;
+
+    /**
      * 头像
      */
     private String avatar;
@@ -56,12 +62,12 @@ public class SysUser extends BaseEntity {
     /**
      * 经度
      */
-    private String longitude;
+    private BigDecimal longitude;
 
     /**
      * 纬度
      */
-    private String latitude;
+    private BigDecimal latitude;
 
     /**
      * 用户签名

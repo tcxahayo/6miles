@@ -3,15 +3,18 @@ package com.bs.system.controller;
 
 import com.bs.common.base.BaseController;
 import com.bs.common.utils.R;
+import com.bs.common.utils.ValidatorUtil;
 import com.bs.system.service.ISysCodeService;
+import com.bs.system.vo.CodeVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 /**
  * <p>
@@ -22,8 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-02-06
  */
 @RestController
+@Validated
 @RequestMapping("/code")
-@Api("短信验证码")
+@Api(tags = "短信验证码", value = "登陆")
 public class SysCodeController extends BaseController {
 
     private ISysCodeService codeService;
@@ -33,10 +37,11 @@ public class SysCodeController extends BaseController {
         this.codeService = codeService;
     }
 
-    @PostMapping
-    @ApiOperation(value = "获取短信验证码")
-    public R<Boolean> code(@RequestParam("phone") String phone) {
+    @GetMapping
+    @ApiOperation(value = "获取短信验证码", notes = "用于用户注册")
+    @ApiImplicitParam(name = "phone", value = "手机号")
+    public R<Boolean> code(@RequestParam("phone") @Pattern(regexp = ValidatorUtil.REGEX_MOBILE, message = "手机号格式不正确") String phone) {
         codeService.sendCode(phone);
-        return new R<>(true, "发送成功");
+        return R.success(true, "发送成功");
     }
 }

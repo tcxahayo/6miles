@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.bus.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="com.bs.bus.entity.Order">
+        <id column="id" property="id" />
+        <result property="number" column="number" />
+        <result property="name" column="name" />
+        <result property="phone" column="phone" />
+        <result property="address" column="address" />
+        <result property="remark" column="remark" />
+        <result property="status" column="status" />
+        <result column="price" property="price" />
+        <result property="payDate" column="payDate" />
+        <result property="payType" column="payType" />
+        <result property="createDate" column="createDate" />
+        <result property="updateDate" column="updateDate" />
+        <association property="goods">
+            <id column="gid" property="id" />
+            <result column="title" property="title" />
+            <result column="gprice" property="price" />
+            <result column="images" property="images" />
+            <result column="desc" property="desc" />
+            <result column="area" property="area" />
+        </association>
+    </resultMap>
+
+    <select id="selectOrderList" parameterType="com.bs.bus.entity.Order" resultMap="orderMap">
+        select o.*, g.*, g.price gprice, g.id gid
+        from bus_order o, bus_goods g
+        where o.goodsId = g.id and g.userId = #{userId}
+        <if test="id != null">
+            and o.id = #{id}
+        </if>
+        <if test="status != null">
+            and o.status = #{status}
+        </if>
+        order by o.createDate desc
+    </select>
+
+</mapper>

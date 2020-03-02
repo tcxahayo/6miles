@@ -10,10 +10,11 @@ spring:
   profiles:
     active: dev
 
+
 # mybatis-plus
 mybatis-plus:
   mapper-locations: classpath:mapper/*/*.xml
-  type-aliases-package: com.bs.system.entity
+  type-aliases-package: com.bs.*.entity
   global-config:
     db-config:
       id-type: UUID
