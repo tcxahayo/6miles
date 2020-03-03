@@ -215,7 +215,7 @@ const OrderPage: React.FC = () => {
             </div>
           </div>
           <div className="submit">
-            <div className="sub_price">实付款：<span className="sub_syb">￥</span><span className="sub_mun">1234.00</span></div>
+            <div className="sub_price">实付款：<span className="sub_syb">￥</span><span className="sub_mun">{good?.price}</span></div>
             <div className="btu" onClick={submit}>提交订单</div>
           </div>
         </div>

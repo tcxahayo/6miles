@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useRef } from 'react';
 import './view.scss';
 import '../../style/iconfont.scss';
 import Product from '@/components/Goods';
@@ -19,11 +19,15 @@ const Profile: React.FC = () => {
   const [publish, setPublish] = useState(false);
   const [list, setPubList] = useState<IGoods[]>([]);
   const [cList, setClist] = useState<IGoods[]>([]);
+  const [length, setLength] = useState();
+
 
   const useInfo = useSelector((state: State) => state.app.userInfo);
 
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
+
+
 
   useEffect(() => {
     if (token) {
@@ -32,6 +36,10 @@ const Profile: React.FC = () => {
     publishList();
     collectList();
   }, [])
+
+  function len(parm:any){
+    setLength(parm)
+  }
 
   //获取用户信息
   async function userInfo() {
@@ -91,8 +99,9 @@ const Profile: React.FC = () => {
     setOrder(false);
     setCollect(false);
     setPublish(true);
-    console.log(list.length)
   }
+
+
 
   return (
     <Fragment>
@@ -122,7 +131,7 @@ const Profile: React.FC = () => {
         </div>
         <div className="content">
           <div className="menu">
-            <div className={`order ${order ? "active" : ''}`} onClick={changeOrder}>0个订单</div>
+  <div className={`order ${order ? "active" : ''}`} onClick={changeOrder}>{length}个订单</div>
   <div className={`collect ${cllect ? "active" : ''}`} onClick={changeCollect}>{cList.length}个收藏</div>
   <div className={`publish ${publish ? "active" : ''}`} onClick={changePublish}>{list.length}个已发布</div>
           </div>
@@ -131,8 +140,7 @@ const Profile: React.FC = () => {
             {
               order &&  (
                   <Fragment>
-                    <Order
-                    />
+                    <Order getLength={len} />
                   </Fragment>
                 )
 

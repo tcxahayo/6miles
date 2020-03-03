@@ -5,7 +5,8 @@ export interface IOrder{
   status:number,
   price:number,
   goodsId:string,
-  goods:IGoods
+  goods:IGoods,
+  createDate:string
 }
 export interface IGoods {
   images:string,
