@@ -27,7 +27,7 @@ public class R<T> implements Serializable {
     }
 
     public static R<Boolean> success(String msg) {
-        return new R<>(CommonConstant.SUCCESS, msg, null);
+        return new R<>(CommonConstant.SUCCESS, msg, true);
     }
 
     public static<T> R<T> success(T data, String msg) {

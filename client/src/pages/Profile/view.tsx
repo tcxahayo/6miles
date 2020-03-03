@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { actions } from '@/pages/App/store';
 import { getUserInfo } from '../../components/Login/api';
 import Order from '@/pages/Order/view';
-import { getPublishList, IGoods, getCollectList } from './apis'
+import { getPublishList, IGoods, getCollectList} from './apis'
 
 declare const BMap: any;
 
@@ -19,6 +19,7 @@ const Profile: React.FC = () => {
   const [publish, setPublish] = useState(false);
   const [list, setPubList] = useState<IGoods[]>([]);
   const [cList, setClist] = useState<IGoods[]>([]);
+
   const useInfo = useSelector((state: State) => state.app.userInfo);
 
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const Profile: React.FC = () => {
 
     }
   }
+
 
   //获取发布列表
   async function publishList() {
@@ -127,11 +129,13 @@ const Profile: React.FC = () => {
           <div className="detail">
             {/* 订单 */}
             {
-              order && (
-                <Fragment>
-                  <Order />
-                </Fragment>
-              )
+              order &&  (
+                  <Fragment>
+                    <Order
+                    />
+                  </Fragment>
+                )
+
             }
             {/* 收藏 */}
             {

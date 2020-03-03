@@ -1,10 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import './view.scss';
+import {getOrderList} from './api'
 
-const Order: React.FC = () => {
+const Order: React.FC= () => {
   const [all, setAll] = useState(true);
   const [unpay, setUnpady] = useState(false);
   const [paied, setPaied] = useState(false);
+useEffect(()=>{
+  orderList()
+},[])
+async function orderList(date?:any){
+  const data = await getOrderList({date});
+}
   //点击全部订单
   function allOrder() {
     setAll(true);
@@ -41,7 +48,7 @@ const Order: React.FC = () => {
                       <div className="orderTime">2020-2-24</div>
                       <div className="orderNum">
                         <span className="orderTxt1">订单号: </span>
-                        <span className="orderTxt2">1234567890987654321</span>
+              <span className="orderTxt2">123</span>
                       </div>
                     </div>
                     <div className="orderMid">
@@ -57,32 +64,6 @@ const Order: React.FC = () => {
                         <div className="cancel">取消订单</div>
                       </div>
                       <div className="opeator" style={{ display: 'none' }}>
-                        <div className="buied">已付款</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="all_order">
-                    <div className="orderTop">
-                      <div className="orderTime">2020-2-20</div>
-                      <div className="orderNum">
-                        <span className="orderTxt1">订单号: </span>
-                        <span className="orderTxt2">1234567890987654321</span>
-                      </div>
-                    </div>
-                    <div className="orderMid">
-                      <div className="pImg">
-                        <img className="img1" src="https://img01.sogoucdn.com/app/a/07/57d9e1c69332c8da692c3ec5c0e1466b" alt="" />
-                      </div>
-                      <div className="pTitle">溪岸橱柜定制整体现代简约开放式厨房厨柜定做全屋定制小厨房装修 [交易快照]</div>
-                      <div className="pPrice">￥1234.00</div>
-                      <div className="warn">举报违规</div>
-                      <div className="order_detail">订单详情</div>
-                      <div className="opeator" style={{ display: 'none' }}>
-                        <div className="buy">付款</div>
-                        <div className="cancel">取消订单</div>
-                      </div>
-                      <div className="opeator">
                         <div className="buied">已付款</div>
                       </div>
                     </div>

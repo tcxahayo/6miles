@@ -12,6 +12,8 @@ export interface IUser{
   nickname: string;
 }
 
+
+
 export function getPublishList(){
   return request<IGoods []>('/goods/sellList',{},'GET')
 }
@@ -19,3 +21,6 @@ export function getPublishList(){
 export function getCollectList(){
   return request<IGoods []>('/goods/collect',{},'GET')
 }
+
+
+
