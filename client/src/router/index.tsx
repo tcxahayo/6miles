@@ -6,7 +6,8 @@ import Profile from '@/pages/Profile';
 import GoodsDetail from '@/pages/GoodsDetail'
 import Release from '@/components/Release/view';
 import OrderPage from '@/pages/OrderPage/view';
-import Edit from '@/pages/Edit/view'
+import Edit from '@/pages/Edit/view';
+import Chat from '@/pages/Chat';
 
 const AppRouters = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouters = () => {
           <Route path="/release" component={Release} />
           <Route path="/orderPage/:id" component={OrderPage} />
           <Route path="/edit" component={Edit} />
+          <Route path="/chat" component={Chat} />
         </App>
       </Switch>
     </Router>

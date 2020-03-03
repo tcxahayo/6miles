@@ -23,7 +23,7 @@ const Goods: React.FC = () => {
       })
       setGoods(res)
     })
-  }, [])
+  },[])
 
   return (
     <div className="goods_container">
@@ -38,28 +38,20 @@ const Goods: React.FC = () => {
         {
           goods.map((item, index) => {
             return (
-              <div >
                 <Product
+                  key={item.id}
                   img={item.images}
                   title={item.title}
                   price={item.price}
                   userName={item.user.nickname}
                   avatar={item.user.avatar}
                   goodId={item.id}
+                  collection={item.collection}
+                  index={index}
                 />
-              </div>
             )
           })
         }
-        <Link to="/GoodsDetail">
-          <Product
-            img="https://tse1-mm.cn.bing.net/th?id=OIP.1e3YVW946dgy5uJH764JXwHaFj&w=141&h=106&c=8&rs=1&qlt=90&pid=3.1&rm=2"
-            title="啊哈哈"
-            price={23}
-            userName="12"
-            avatar="23"
-          />
-        </Link>
       </Masonry>
     </div>
 

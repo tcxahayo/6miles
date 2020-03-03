@@ -157,6 +157,9 @@ const Profile: React.FC = () => {
                       price={item.price}
                       userName={item.user.nickname}
                       avatar={item.user.avatar}
+                      collection={item.collection}
+                      index={index}
+                      goodId={item.id}
                     />
                   </Fragment>
                 )
@@ -181,6 +184,9 @@ const Profile: React.FC = () => {
                       price={item.price}
                       userName={item.user.nickname}
                       avatar={item.user.avatar}
+                      collection={item.collection}
+                      index={index}
+                      goodId={item.id}
                     />
                   </Fragment>
                 )

@@ -9,7 +9,9 @@ export interface IProps {
   address?:string;
   title:string;
   imageClassName?: string;
-  goodId?:string;
+  goodId:string;
+  collection:boolean;
+  index:number;
 }
 
 export function collect(data:any){

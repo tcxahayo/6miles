@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IProps,collect } from './api';
 import { Link} from 'react-router-dom';
 import './view.scss';
 import '../../style/iconfont.scss';
+import { message } from 'antd';
+
+
 
 
 const Goods: React.FC<IProps> = (props) => {
-  const { img, imageClassName, goodId } = props;
+  const { img, imageClassName, goodId, collection, index } = props;
   const { title } = props;
   const { price } = props;
   const {userName} = props;
   const {avatar} = props;
-  const [isCollect, setCollect] = useState(false);
-  const [type,setType] = useState(1);
+  const [isCollect, setCollect] = useState(collection);
 
-  function stop(e:any) {
+  async function stop(e:any) {
     e.preventDefault()
-    getCollect()
+    await collect({goodsId: goodId, type: isCollect ? 2 : 1})
+    setCollect(!isCollect)
+    if(isCollect){
+      message.error('取消收藏',2)
+    }else{
+      message.success('收藏成功', 2)
+    }
   }
-  //添加收藏
-   async function getCollect(){
-     const data = await collect({goodsId:goodId,type:type})
-     if(data == null){
-      setCollect(!isCollect);
-     }
-   }
 
   return (
     <div className="c_goods_container">

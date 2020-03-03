@@ -101,6 +101,9 @@ async function detail(id: any) {
             price={23}
             userName="12"
             avatar="23"
+            collection={true}
+            index={123}
+            goodId="123"
           />
           <Product
             imageClassName="img2"
@@ -109,6 +112,9 @@ async function detail(id: any) {
             price={23}
             userName="12"
             avatar="23"
+            collection={true}
+            index={123}
+            goodId="123"
           />
         </div>
       </div>

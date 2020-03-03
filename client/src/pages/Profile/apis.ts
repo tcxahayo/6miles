@@ -5,6 +5,7 @@ export interface IGoods {
   price:number,
   title:string,
   id:string,
+  collection:boolean,
   user: IUser
 }
 export interface IUser{
