@@ -16,18 +16,16 @@ const Home: React.FC = () => {
       setCategory(res);
     })
   }, [])
+
 //定位
-  useEffect(() =>{
-    const myCity = new BMap.LocalCity();
-    const gc = new BMap.Geocoder();
-    myCity.get((result: any) => {
-      const city = result.name;
-      const pt = result.center;
-      gc.getLocation(pt,function (rs:any) {
-        const addComp = rs.addressComponents;
-        const province = addComp.province;
-        console.log(city)
-        console.log(province)
+  useEffect(() => {
+    AMap.plugin('AMap.CitySearch', function () {
+      var citySearch = new AMap.CitySearch()
+      citySearch.getLocalCity(function (status:any, result:any) {
+        if (status === 'complete' && result.info === 'OK') {
+          // 查询成功，result即为当前所在城市信息
+          console.log(result)
+        }
       })
     })
   }, [])

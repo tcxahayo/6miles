@@ -47,22 +47,22 @@ const Release: React.FC = () => {
     })
   }, [])
   //获取定位
-  useEffect(() => {
-    const myCity = new BMap.LocalCity();
-    const gc = new BMap.Geocoder();
-    myCity.get((result: any) => {
-      console.log(result)
-      const lat = result.center.lat
-      const lng = result.center.lng
-      const city = result.name;
-      const pt = result.center;
-      gc.getLocation(pt, function (rs: any) {
-        const addComp = rs.addressComponents;
-        const province = addComp.province;
-        setForm(Object.assign({}, form, { latitude: lat, longitude: lng, area: city + province }));
-      })
+//定位
+useEffect(() => {
+  AMap.plugin('AMap.CitySearch', function () {
+    var citySearch = new AMap.CitySearch()
+    citySearch.getLocalCity(function (status:any, result:any) {
+      if (status === 'complete' && result.info === 'OK') {
+        // 查询成功，result即为当前所在城市信息
+        const lat = result.bounds.xc.lat;
+        const lng = result.bounds.xc.lng;
+        const province = result.province;
+        const city = result.city
+        setForm(Object.assign({}, form, { latitude: lat, longitude: lng, area: province +' , '+ city }));
+      }
     })
-  }, [])
+  })
+}, [])
   //获取用户输入信息
   function changeValue(e: any) {
     const value = e.target.value;
@@ -107,7 +107,7 @@ const Release: React.FC = () => {
         return item.response.data
       }
     }).join(',');
-    setForm(Object.assign({}, form, { images: data, latitude: 104.1234, longitude: 30.3421, area: '四川成都' }));
+    setForm(Object.assign({}, form, { images: data}));
   }
 
   const uploadButton = (
@@ -123,7 +123,6 @@ const Release: React.FC = () => {
     if (data) {
       message.success('发布成功', 2);
       setTimeout(window.location.href = 'http://localhost:3000/release', 2000)
-
     }
   }
 

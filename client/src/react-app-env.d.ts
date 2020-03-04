@@ -9,7 +9,9 @@ declare namespace NodeJS {
   }
 }
 
-declare const BMap: any;
+declare const BMap: any;//百度地图
+declare const AMap:any;//高德地图
+
 
 declare module '*.bmp' {
   const src: string;

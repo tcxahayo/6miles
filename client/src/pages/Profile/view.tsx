@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 import { actions } from '@/pages/App/store';
 import { getUserInfo } from '../../components/Login/api';
 import Order from '@/pages/Order/view';
-import { getPublishList, IGoods, getCollectList} from './apis'
+import { getPublishList, IGoods, getCollectList } from './apis'
 
 declare const BMap: any;
+declare const AMap: any;
 
 const Profile: React.FC = () => {
   const [order, setOrder] = useState(true);
@@ -20,6 +21,7 @@ const Profile: React.FC = () => {
   const [list, setPubList] = useState<IGoods[]>([]);
   const [cList, setClist] = useState<IGoods[]>([]);
   const [length, setLength] = useState();
+  const [index,setIndex] = useState();
 
 
   const useInfo = useSelector((state: State) => state.app.userInfo);
@@ -34,10 +36,13 @@ const Profile: React.FC = () => {
       userInfo();
     }
     publishList();
-    collectList();
   }, [])
+  useEffect(()=>{
+    collectList();
+    console.log(index)
+  },[index])
 
-  function len(parm:any){
+  function len(parm: any) {
     setLength(parm)
   }
 
@@ -46,7 +51,6 @@ const Profile: React.FC = () => {
     const data = await getUserInfo();
     if (data) {
       dispatch(actions.setUserInfo(data));
-
     }
   }
 
@@ -61,25 +65,8 @@ const Profile: React.FC = () => {
   async function collectList() {
     const data = await getCollectList();
     setClist(data);
-
   }
 
-
-  useEffect(() => {
-    //定位
-    const myCity = new BMap.LocalCity();
-    myCity.get((result: any) => {
-      var myPoint = result.center;
-      var map = new BMap.Map("allmap"); // 创建Map实例
-      map.centerAndZoom(new BMap.Point(myPoint), 15); // 初始化地图,设置中心点坐标和地图级别
-      map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
-      map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-      map.centerAndZoom(myPoint, 11);                 // 初始化地图，设置中心点坐标和地图级别
-      map.addControl(new BMap.GeolocationControl());
-      console.log(BMap.GeolocationControl())
-    })
-
-  }, [])
 
   //点击order
   function changeOrder() {
@@ -100,7 +87,30 @@ const Profile: React.FC = () => {
     setCollect(false);
     setPublish(true);
   }
+//定位
+useEffect(() => {
+  var myMap = new AMap.Map("allmap",{
+    resizeEnable: true,
+    center: [116.397428, 39.90923],
+    zoom: 18
+  })
+  AMap.plugin(['AMap.CitySearch','AMap.Geolocation'], function () {
+    var citySearch = new AMap.CitySearch();
+    var geolocation = new AMap.Geolocation();
+    myMap.addControl(geolocation)
+    citySearch.getLocalCity(function (status:any, result:any) {
+      if (status === 'complete' && result.info === 'OK') {
+        // 查询成功，result即为当前所在城市信息
+        myMap.setBounds(result.bounds);
+        console.log(result)
+      }
+    })
+  })
+}, [])
 
+function changeCList(){
+  collectList()
+}
 
 
   return (
@@ -131,18 +141,18 @@ const Profile: React.FC = () => {
         </div>
         <div className="content">
           <div className="menu">
-  <div className={`order ${order ? "active" : ''}`} onClick={changeOrder}>{length}个订单</div>
-  <div className={`collect ${cllect ? "active" : ''}`} onClick={changeCollect}>{cList.length}个收藏</div>
-  <div className={`publish ${publish ? "active" : ''}`} onClick={changePublish}>{list.length}个已发布</div>
+            <div className={`order ${order ? "active" : ''}`} onClick={changeOrder}>{length}个订单</div>
+            <div className={`collect ${cllect ? "active" : ''}`} onClick={changeCollect}>{cList.length}个收藏</div>
+            <div className={`publish ${publish ? "active" : ''}`} onClick={changePublish}>{list.length}个已发布</div>
           </div>
           <div className="detail">
             {/* 订单 */}
             {
-              order &&  (
-                  <Fragment>
-                    <Order getLength={len} />
-                  </Fragment>
-                )
+              order && (
+                <Fragment>
+                  <Order getLength={len} />
+                </Fragment>
+              )
 
             }
             {/* 收藏 */}
@@ -160,6 +170,7 @@ const Profile: React.FC = () => {
                       collection={item.collection}
                       index={index}
                       goodId={item.id}
+                      changeIndex={changeCList}
                     />
                   </Fragment>
                 )

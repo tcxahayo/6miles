@@ -6,6 +6,7 @@ export interface IGoods {
   title:string,
   id:string,
   collection:boolean,
+  area:string,
   user: IUser
 }
 export interface IUser{

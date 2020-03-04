@@ -6,8 +6,7 @@ import Product from '@/components/Goods';
 import Masonry from 'react-masonry-component';
 import { Carousel } from 'antd';
 import { Link } from 'react-router-dom';
-import { getGoods, IGoods } from './apis'
-import Item from 'antd/lib/list/Item';
+import { getGoods, IGoods } from './apis';
 
 
 
@@ -48,6 +47,7 @@ const Goods: React.FC = () => {
                   goodId={item.id}
                   collection={item.collection}
                   index={index}
+                  area={item.area}
                 />
             )
           })

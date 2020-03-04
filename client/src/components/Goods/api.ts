@@ -12,6 +12,8 @@ export interface IProps {
   goodId:string;
   collection:boolean;
   index:number;
+  area?:string;
+  changeIndex?:()=>void
 }
 
 export function collect(data:any){

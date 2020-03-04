@@ -8,6 +8,8 @@ import { actions } from '@/pages/App/store';
 import './view.scss';
 import logo1 from '../../imges/logo1.png';
 import small from '../../imges/small.jpg';
+import '../../style/iconfont.scss';
+
 
 
 
@@ -18,14 +20,15 @@ const Header: React.FC = () => {
   const [scrollIsTop, setScrollIsTop] = useState(true);
   const [value, setValue] = useState('');
   const history = useHistory();
+  const [city, setCity] = useState();
 
   function search(e: FormEvent) {
     e.preventDefault()
     value ? history.push(`/?key=${value}`) : history.push(`/`)
   }
-  useEffect(()=>{
+  useEffect(() => {
     setIsLogin(true)
-  },[userInfo])
+  }, [userInfo])
 
   useEffect(() => {
     const onScroll = throttling(function () {
@@ -56,6 +59,20 @@ const Header: React.FC = () => {
     localStorage.removeItem('token');
     dispatch(actions.setUserInfo(''));
   }
+  //定位
+  useEffect(() => {
+    AMap.plugin('AMap.CitySearch', function () {
+      var citySearch = new AMap.CitySearch()
+      citySearch.getLocalCity(function (status: any, result: any) {
+        if (status === 'complete' && result.info === 'OK') {
+          // 查询成功，result即为当前所在城市信息
+          const city = result.province + result.city;
+          setCity(city)
+          console.log(result)
+        }
+      })
+    })
+  }, [])
   // 未登陆菜单
   function LoginMenu() {
     return (
@@ -78,7 +95,7 @@ const Header: React.FC = () => {
           className="item"
           title={
             <span className="submenu-title-wrapper">
-              <Avatar className="avatar" shape="circle" src={userInfo.avatar? userInfo.avatar:small} />
+              <Avatar className="avatar" shape="circle" src={userInfo.avatar ? userInfo.avatar : small} />
               {userInfo.nickname}
             </span>
           }
@@ -96,7 +113,7 @@ const Header: React.FC = () => {
     <div className="c_header_container" style={scrollIsTop ? {} : { boxShadow: '0 2px 4px rgba(0,0,0,.25)' }}>
       <div className="row">
         <Link to="/" className="logo">
-          <img className="logoImg" src={logo1} alt=""/>
+          <img className="logoImg" src={logo1} alt="" />
         </Link>
         <form className="search" onSubmit={search}>
           <div className="left">
@@ -112,14 +129,14 @@ const Header: React.FC = () => {
             />
           </div>
           <div className="right">
-            <Icon className="icon" type="search" />
-            <span className="location">常州,中国常州,中国常州,中国</span>
+            <i className="iconfont address">&#xe629;</i>
+            <span className="location">{city}</span>
           </div>
           <Button className="btn" htmlType="submit" shape="round" type="primary">Go</Button>
         </form>
         <div className="right">
           <Link to='/release'>
-          <Button className="btn" shape="round" type="primary" icon="notification">List It</Button>
+            <Button className="btn" shape="round" type="primary" icon="notification">List It</Button>
           </Link>
           {userInfo ? <LoginedMenu /> : <LoginMenu />}
         </div>
