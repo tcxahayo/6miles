@@ -12,7 +12,7 @@ interface Register {
   code: string;
 }
 export async function register(data: Register){
-  const imPassword = await request<string>('/user/register',data,'POST');
-  im.register(data.phone, imPassword, data.nickname); // 环信注册
+  await request<boolean>('/user/register',data,'POST');
+  im.register(data.phone, data.phone, data.nickname); // 环信注册
   return true;
 }

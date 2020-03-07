@@ -44,7 +44,7 @@ public class SysCodeServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> impl
         // 生成短信验证码
         String code = String.valueOf(Math.round((Math.random() * 9 + 1) * 1000));
         // 发送短信验证码
-//        SendSms.send(phone, code);
+        SendSms.send(phone, code);
         // 保存验证码
         if (ObjectUtils.isEmpty(sysCode)) {
             sysCode = new SysCode();

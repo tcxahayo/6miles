@@ -18,6 +18,6 @@ interface User {
 }
 export async function getUserInfo(){
   const user = await request<User>('/user/info', {},'GET');
-  im.login(user.phone, user.imPassword); // 环信登陆
+  im.login(user.phone, user.phone); // 环信登陆
   return user;
 }

@@ -29,6 +29,8 @@ public class SysUser extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String defaultAvatar = "http://182.92.210.231:81/default.png";
+
     /**
      * 手机
      */

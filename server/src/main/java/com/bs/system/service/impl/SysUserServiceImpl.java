@@ -85,6 +85,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setPhone(registerVo.getPhone());
         user.setNickname(registerVo.getNickname());
         user.setPassword(md5Password);
+        user.setAvatar(SysUser.defaultAvatar);
 
         boolean result = this.save(user);
         if (!result) {
