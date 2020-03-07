@@ -11,7 +11,6 @@ import { getUserInfo } from '../../components/Login/api';
 import Order from '@/pages/Order/view';
 import { getPublishList, IGoods, getCollectList } from './apis'
 
-declare const BMap: any;
 declare const AMap: any;
 
 const Profile: React.FC = () => {
@@ -27,14 +26,8 @@ const Profile: React.FC = () => {
   const useInfo = useSelector((state: State) => state.app.userInfo);
 
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
-
-
 
   useEffect(() => {
-    if (token) {
-      userInfo();
-    }
     publishList();
   }, [])
   useEffect(()=>{
@@ -119,7 +112,7 @@ function changeCList(){
         <div className="map" id="allmap"></div>
         <div className="userInfo">
           <div className="avater">
-            <img className="avaterImg" src={useInfo.avatar} alt="" />
+            <img className="avaterImg" src={useInfo?.avatar} alt="" />
             <div className="edit">
               <i className="iconfont icnoEdit">&#xe615;</i>
               <Link to="/edit">
@@ -128,13 +121,13 @@ function changeCList(){
             </div>
           </div>
           <div className="userDesc">
-            <div className="name">{useInfo.nickname}</div>
+            <div className="name">{useInfo?.nickname}</div>
             <div className="icnoBox">
               <i className="iconfont phone">&#xe624;
-                <span className="phoneNum">{useInfo.phone}</span>
+                <span className="phoneNum">{useInfo?.phone}</span>
               </i>
               <i className="iconfont email">&#xe639;
-                <span className="emailNum">{useInfo.email ? useInfo.email : "empty"}</span>
+                <span className="emailNum">{useInfo?.email ? useInfo?.email : "empty"}</span>
               </i>
             </div>
           </div>

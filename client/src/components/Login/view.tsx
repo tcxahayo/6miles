@@ -1,6 +1,5 @@
 import React,{ useState } from 'react';
 import './view.scss';
-import bg2 from '../../imges/headimg.jpg';
 import {actions} from '@/pages/App/store';
 import {useDispatch} from 'react-redux';
 import {setToken} from '@/lib/app';
@@ -36,7 +35,6 @@ const Login: React.FC = () => {
     if(data){
       setToken(data);
       userInfo();
-
     }
   }
   //点击注册

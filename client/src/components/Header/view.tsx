@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { Menu, Button, Icon, Avatar } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { throttling } from '@/lib/loadsh';
@@ -11,12 +11,9 @@ import small from '../../imges/small.jpg';
 import '../../style/iconfont.scss';
 
 
-
-
 const Header: React.FC = () => {
   const userInfo = useSelector((state: State) => state.app.userInfo);
   const dispatch = useDispatch();
-  const [isLogin, setIsLogin] = useState(false);
   const [scrollIsTop, setScrollIsTop] = useState(true);
   const [value, setValue] = useState('');
   const history = useHistory();
@@ -26,9 +23,6 @@ const Header: React.FC = () => {
     e.preventDefault()
     value ? history.push(`/?key=${value}`) : history.push(`/`)
   }
-  useEffect(() => {
-    setIsLogin(true)
-  }, [userInfo])
 
   useEffect(() => {
     const onScroll = throttling(function () {

@@ -6,7 +6,6 @@ import store from './store';
 import AppRouter from '@/router';
 import '@/style/iconfont.scss';
 import './index.scss';
-
 // css热更新
 const render = (Component: React.FC) => {
   ReactDOM.render(

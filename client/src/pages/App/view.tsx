@@ -13,19 +13,17 @@ import {actions} from '@/pages/App/store';
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token')
   useEffect(()=>{
+    const token = getToken();
     if (token) {
-      userInfo()
+      (async function() {
+        const data = await getUserInfo();
+        if (data) {
+          dispatch(actions.setUserInfo(data));
+        }
+      })()
     }
-  },[])
-
-  async function userInfo() {
-    const data = await getUserInfo();
-    if (data) {
-      dispatch(actions.setUserInfo(data));
-    }
-  }
+  },[dispatch])
 
   const { loginModal, registerModal } = useSelector((state: State) => state.app);
   return (
