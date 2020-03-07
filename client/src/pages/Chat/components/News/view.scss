@@ -1,0 +1,27 @@
+.chat_news_container {
+  margin: 20px 0 40px;
+
+  &-right {
+    text-align: right;
+  }
+
+  .text {
+    display: inline-block;
+    max-width: 80%;
+    background: #eceff1;
+    color: rgba(0, 0, 0, 0.65);
+    margin: 0 10px;
+    word-break: break-all;
+    padding: 8px 15px;
+    border-radius: 4px;;
+    font-size: 13px;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  .time {
+    font-size: 12px;
+    color: #888c98;
+    margin: 0 40px;
+  }
+}

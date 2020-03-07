@@ -1,0 +1,49 @@
+.chat_friend_container {
+  display: flex;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 13px 10px;
+  &-checked {
+    background-color: rgba(113, 134, 161, 0.1);
+  }
+
+  .left {
+    flex-shrink: 0;
+  }
+
+  .right {
+    margin-left: 10px;
+    flex-grow: 1;
+    display: flex;
+    width: 0;
+    justify-content: space-between;
+    flex-direction: column;
+
+
+    .info {
+      display: flex;
+
+      .name {
+        width: 0;
+        font-size: 16px;
+        white-space: nowrap;
+        color: black;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+      }
+      .time {
+        font-size: 12px;
+        color: #999999;
+      }
+    }
+
+    .message {
+      font-size: 12px;
+      display: block;
+      color: #999999;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

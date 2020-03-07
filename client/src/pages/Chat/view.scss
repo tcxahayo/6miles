@@ -1,0 +1,24 @@
+.chat_container {
+  width: 1100px;
+  height: 800px;
+  margin: 100px auto 10px;
+  background: white;
+  display: flex;
+  border: 1px solid #f1f1f1;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 4px 0 #f1f1f1;
+
+
+  .firends {
+    width: 300px;
+    height: 100%;
+    border-right: 1px solid #f1f1f1;
+    overflow: auto;
+    flex-shrink: 0;
+  }
+
+  .dialog {
+    flex-grow: 1;
+  }
+}

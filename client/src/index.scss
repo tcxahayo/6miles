@@ -7,8 +7,9 @@ html, body {
   background: #f4f5f5;
   min-width: 1020px;
 }
-button, input {
+button, input, textarea {
   outline: unset;
+  border: unset;
 }
 ul li {
   list-style: none;
