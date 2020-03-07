@@ -4,7 +4,14 @@ import {IProps} from './index';
 import './view.scss';
 
 const Friends: React.FC<IProps> = (props) => {
-  const { checked } = props;
+  const { checked, avatar, nickname, lastTime, lastText } = props;
+
+  function timeToString(time: number | null) {
+    if (time) {
+      return new Date(time);
+    }
+    return '';
+  }
 
   return (
     <div className={`chat_friend_container ${checked && 'chat_friend_container-checked'}`}>
@@ -12,14 +19,14 @@ const Friends: React.FC<IProps> = (props) => {
         shape="square"
         className="left"
         size="large"
-        src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1898582417,1582081952&fm=26&gp=0.jpg"
+        src={avatar}
       />
       <div className="right">
         <div className="info">
-          <span className="name">It's me</span>
-          <span className="time">19:30</span>
+          <span className="name">{nickname}</span>
+          <span className="time">{timeToString(lastTime)}</span>
         </div>
-        <span className="message">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</span>
+        <span className="message">{lastText}</span>
       </div>
     </div>
   )

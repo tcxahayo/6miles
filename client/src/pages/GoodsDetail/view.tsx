@@ -3,9 +3,9 @@ import './view.scss';
 import '../../style/iconfont.scss';
 import { Carousel } from 'antd';
 import Product from '@/components/Goods';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { getDetail, Param } from './api';
-import Goods from '@/components/Goods/view';
+import im from '@/lib/Im';
 
 interface Params {
   id: string;
@@ -14,29 +14,41 @@ interface Params {
 const GoodsDetail: React.FC = () => {
   const { id } = useParams<Params>();
   const carousel = useRef<any>();
+  const history = useHistory();
   const [collect, setCollect] = useState(false);
   const [good, setGood] = useState<Param>();
   const [img, setImg] = useState<string []>([]);
 
   useEffect(() => {
-    detail(id)
-  },[])
+    (async function() {
+      const data = await getDetail(id);
+      if (data) {
+        const imgs = data.images.split(',');
+        setImg(imgs)
+        setGood(data)
+      }
+    })()
+  },[id])
+
   function changeCarousel(index: number) {
     carousel.current.goTo(index)
   }
 
-  function collection() {
-    setCollect(!collect)
+  function contactSeller() {
+    if (!good) return false;
+    im.setFriends({
+      toImUserId: good.user.phone,
+      avatar: good.user.avatar,
+      nickname: good.user.nickname,
+      lastText: null,
+      lastTime: null,
+      chatLog: []
+    });
+    history.push('/chat');
   }
 
-  //商品详情
-async function detail(id: any) {
-    const data = await getDetail(id);
-    if (data) {
-      const imgs = data.images.split(',');
-      setImg(imgs)
-      setGood(data)
-    }
+  function collection() {
+    setCollect(!collect)
   }
 
   return (
@@ -80,7 +92,7 @@ async function detail(id: any) {
             <i className="iconfont icno-collection" style={collect ? { color: 'red' } : { color: '#fff' }}>&#xe614;</i>
             <span className="collection_txt" style={collect ? { color: 'red' } : { color: '#fff' }}>收藏</span>
           </div>
-          <div className="chat">联系卖家</div>
+          <div className="chat" onClick={contactSeller}>联系卖家</div>
           <Link to={"/orderPage/" + good?.id}>
             <div className="buy">购买</div>
           </Link>

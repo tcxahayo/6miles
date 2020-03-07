@@ -1,12 +1,15 @@
 import {createStore, combineReducers, compose} from 'redux';
-import {app, IState} from '@/pages/App/store';
+import {app, IState as AppState} from '@/pages/App/store';
+import chat, {IState as ChatState} from '@/pages/Chat/store';
 
 export interface State {
-  app: IState
+  app: AppState
+  chat: ChatState[]
 }
 
 const reducers = combineReducers<State>({
-  app
+  app,
+  chat
 });
 
 

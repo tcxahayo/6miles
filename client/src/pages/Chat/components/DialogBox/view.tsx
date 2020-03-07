@@ -1,5 +1,6 @@
 import React,{ useRef, useEffect } from 'react';
 import {Button} from 'antd';
+import im from '@/lib/Im';
 import News from '../News';
 import './view.scss';
 
@@ -15,7 +16,7 @@ const DialogBox: React.FC = () => {
   function sendMessage(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if(e.keyCode === 13) {
       e.preventDefault();
-      console.log('发送')
+      im.sendMsg('13837811459', 'hello')
     }
   }
 

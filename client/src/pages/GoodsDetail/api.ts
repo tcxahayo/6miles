@@ -11,8 +11,9 @@ export interface Param{
 }
 
 interface User{
-  avatar:string,
-  nickname:string
+  avatar:string;
+  nickname:string;
+  phone: string;
 }
 
 export function getDetail(id:any){
