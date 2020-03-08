@@ -1,23 +1,9 @@
 import config from './ImConfig';
-import store from '@/store';
 import {actions} from '@/pages/Chat/store';
+import store from '@/store';
 let WebIM = require('easemob-websdk') as any;
 WebIM.config = config;
 
-interface ChatLog {
-  imUserId: string; // im用户id
-  text: string; // 文本信息
-  time: number; // 发送时间
-}
-interface Session {
-  avatar: string; // 头像
-  myImUserId?: string; // 个人id
-  toImUserId: string; // 接收人im用户id
-  nickname: string; // 昵称
-  lastTime: number | null; // 最后发送时间
-  lastText: string | null; // 最后发送的信息
-  chatLog: ChatLog[]; // 聊天记录
-}
 
 /**
  * 单例模式
@@ -57,11 +43,28 @@ class IM {
     });
     conn.listen({
       onOpened: (message: any) => {
-        // 获取会话列表
+        // 登陆成功，获取会话列表
         im.getFriends();
-      },         //连接成功回调
-      onClosed: (message: any) => { },         //连接关闭回调
-      onTextMessage: (message: any) => { },    //收到文本消息
+      },
+      onClosed: (message: any) => { },
+      onTextMessage: (message: any) => {
+        const avatar = message.ext.avatar || '';
+        const nickname = message.ext.nickname || message.from;
+        // 加入会话列表
+        store.dispatch(actions.putChatItem({
+          id: `${message.to}#${message.from}`,
+          avatar,
+          nickname,
+          chatLog: []
+        }))
+        // 保存信息
+        store.dispatch(actions.putMessage({
+          sessionId: `${message.to}#${message.from}`,
+          from: message.from,
+          text: message.data,
+          time: Number(message.time)
+        }))
+      }
     });
 
     this.conn = conn;
@@ -102,35 +105,28 @@ class IM {
   }
 
   /**
-   * 获取临时会话
+   * 退出登陆
    */
-  public getFriends() {
-    const allSessionList = localStorage.getItem('imSessionList') || '[]';
-    const allSession = JSON.parse(allSessionList) as Session[];
-    const myImUserId = store.getState().app.userInfo.phone;
-    const session = allSession.filter(item => item.myImUserId === myImUserId);
-    store.dispatch(actions.setChatList(session));
-    return session;
+  public signout() {
+    this.conn.close();
   }
 
   /**
-   * 添加临时会话
-   * @param userid
+   * 从本地读取临时会话
    */
-  public setFriends(s: Session) {
-    const allSessionList = localStorage.getItem('imSessionList') || '[]';
-    const allSession = JSON.parse(allSessionList) as Session[];
-    const myImUserId = store.getState().app.userInfo.phone;
-    const session = allSession.filter(item => item.myImUserId === myImUserId);
-    for(const i in session) {
-      if (session[i].toImUserId === s.toImUserId) {
-        return;
-      }
-    }
-    s.myImUserId = myImUserId;
-    session.unshift(s);
-    localStorage.setItem('imSessionList', JSON.stringify(session));
-    this.getFriends();
+  public getFriends() {
+    const key = store.getState().app.userInfo.phone;
+    const allSessionList = localStorage.getItem(key) || '[]';
+    const allSession = JSON.parse(allSessionList) as any[];
+    store.dispatch(actions.setChatList(allSession));
+  }
+
+  /**
+   * 保存到本地临时会话
+   * @param allSession 会话列表
+   */
+  public setFirends(key: string, allSession: any) {
+    localStorage.setItem(key ,JSON.stringify(allSession))
   }
 
   /**
@@ -140,13 +136,26 @@ class IM {
    */
   public sendMsg(to: string, msg: string) {
     const id = this.conn.getUniqueId();
+    console.log(id)
     const message = new WebIM.default.message('txt', id);
+    const userInfo = store.getState().app.userInfo
     message.set({
       msg: msg,                  // 消息内容
       to: to,                          // 接收消息对象（用户id）
       roomType: false,
+      ext: {
+        avatar: userInfo.avatar, // 将用户头像当作扩展消息发送
+        nickname: userInfo.nickname
+      },
       success: (id: any, serverMsgId: any) => {
         console.log('send private text Success');
+        const option = { // 发送成功，将消息保存到redux中
+          sessionId: `${userInfo.phone}#${to}`,
+          from: userInfo.phone,
+          text: msg,
+          time: Date.now()
+        }
+        store.dispatch(actions.putMessage(option));
       },                                       // 对成功的相关定义，sdk会将消息id登记到日志进行备份处理
       fail: (e: any) => {
         console.log(e);

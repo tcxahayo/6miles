@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Firend from './components/friend';
 import DialogBox from './components/DialogBox';
 import {List} from 'antd';
@@ -8,10 +8,6 @@ import {State} from '@/store';
 
 const Chat: React.FC = () => {
   const chatList = useSelector((state: State) => state.chat);
-
-  useEffect(() => {
-  }, []);
-
   const [currentChat, setCuttentChat] = useState(-1);
 
   return (
@@ -20,21 +16,29 @@ const Chat: React.FC = () => {
         className="firends"
         itemLayout="vertical"
         dataSource={chatList}
-        renderItem={(item, index) => (
-          <div onClick={() => setCuttentChat(index)}>
-            <Firend
-              key={item.toImUserId}
-              avatar={item.avatar}
-              nickname={item.nickname}
-              lastText={item.lastText}
-              lastTime={item.lastTime}
-              checked={index === currentChat}
-            />
-          </div>
-        )}
+        renderItem={(item, index) => {
+          let lastTime = null;
+          let lastText = null;
+          if (item.chatLog.length > 0) {
+            lastTime = item.chatLog[item.chatLog.length - 1].time
+            lastText = item.chatLog[item.chatLog.length - 1].text
+          }
+          return (
+            <div onClick={() => setCuttentChat(index)}>
+              <Firend
+                key={item.id}
+                avatar={item.avatar}
+                nickname={item.nickname}
+                lastText={lastText}
+                lastTime={lastTime}
+                checked={index === currentChat}
+              />
+            </div>
+          )
+        }}
       />
       <div className="dialog">
-        {currentChat !== -1 && (<DialogBox />)}
+        {currentChat !== -1 && (<DialogBox {...chatList[currentChat]} />)}
       </div>
     </div>
   )

@@ -6,13 +6,6 @@ import './view.scss';
 const Friends: React.FC<IProps> = (props) => {
   const { checked, avatar, nickname, lastTime, lastText } = props;
 
-  function timeToString(time: number | null) {
-    if (time) {
-      return new Date(time);
-    }
-    return '';
-  }
-
   return (
     <div className={`chat_friend_container ${checked && 'chat_friend_container-checked'}`}>
       <Avatar
@@ -24,7 +17,7 @@ const Friends: React.FC<IProps> = (props) => {
       <div className="right">
         <div className="info">
           <span className="name">{nickname}</span>
-          <span className="time">{timeToString(lastTime)}</span>
+          <span className="time">{lastTime}</span>
         </div>
         <span className="message">{lastText}</span>
       </div>

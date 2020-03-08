@@ -5,10 +5,12 @@ import { throttling } from '@/lib/loadsh';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '@/store';
 import { actions } from '@/pages/App/store';
-import './view.scss';
+import im from '@/lib/Im';
+import { clearToken } from '@/lib/app';
 import logo1 from '../../imges/logo1.png';
 import small from '../../imges/small.jpg';
 import '../../style/iconfont.scss';
+import './view.scss';
 
 
 const Header: React.FC = () => {
@@ -50,8 +52,10 @@ const Header: React.FC = () => {
   }
   //点击退出登录
   function longinOut() {
-    localStorage.removeItem('token');
-    dispatch(actions.setUserInfo(''));
+    clearToken();
+    dispatch(actions.setUserInfo(null));
+    im.signout();
+    history.push('/');
   }
   //定位
   useEffect(() => {
@@ -81,9 +85,9 @@ const Header: React.FC = () => {
     return (
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
         <Menu.Item className="item">
-          <span className="submenu-title-wrapper">
+          <Link to="/chat" className="submenu-title-wrapper">
             <Icon className="icon" type="message" />消息
-          </span>
+          </Link>
         </Menu.Item>
         <Menu.SubMenu
           className="item"

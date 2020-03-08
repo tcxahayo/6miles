@@ -15,7 +15,10 @@ const AppRouters = () => {
       <Switch>
         <App>
           <Route path="/" exact component={Home} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile" render={(props) => {
+            console.log(props)
+            return <Profile />;
+          }} />
           <Route path="/GoodsDetail/:id" component={GoodsDetail} />
           <Route path="/release" component={Release} />
           <Route path="/orderPage/:id" component={OrderPage} />

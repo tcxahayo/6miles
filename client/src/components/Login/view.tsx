@@ -4,6 +4,7 @@ import {actions} from '@/pages/App/store';
 import {useDispatch} from 'react-redux';
 import {setToken} from '@/lib/app';
 import {login, getUserInfo} from './api';
+import im from '@/lib/Im';
 
 interface Form{
   phone:string,
@@ -48,6 +49,7 @@ const Login: React.FC = () => {
     if(data){
       dispatch(actions.setUserInfo(data));
       handleModalClicked();
+      im.getFriends();
     }
   }
   return (

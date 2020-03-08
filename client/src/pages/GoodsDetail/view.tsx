@@ -5,7 +5,9 @@ import { Carousel } from 'antd';
 import Product from '@/components/Goods';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getDetail, Param } from './api';
-import im from '@/lib/Im';
+import { actions } from '@/pages/Chat/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '@/store';
 
 interface Params {
   id: string;
@@ -14,7 +16,9 @@ interface Params {
 const GoodsDetail: React.FC = () => {
   const { id } = useParams<Params>();
   const carousel = useRef<any>();
+  const user = useSelector((state: State) => state.app.userInfo)
   const history = useHistory();
+  const dispatch = useDispatch();
   const [collect, setCollect] = useState(false);
   const [good, setGood] = useState<Param>();
   const [img, setImg] = useState<string []>([]);
@@ -36,14 +40,12 @@ const GoodsDetail: React.FC = () => {
 
   function contactSeller() {
     if (!good) return false;
-    im.setFriends({
-      toImUserId: good.user.phone,
+    dispatch(actions.putChatItem({
+      id: `${user.phone}#${good.user.phone}`,
       avatar: good.user.avatar,
       nickname: good.user.nickname,
-      lastText: null,
-      lastTime: null,
       chatLog: []
-    });
+    }))
     history.push('/chat');
   }
 
