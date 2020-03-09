@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
-import './view.scss';
-import '../../style/iconfont.scss';
-import { Carousel } from 'antd';
+import { Carousel, message } from 'antd';
 import Product from '@/components/Goods';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getDetail, Param } from './api';
 import { actions } from '@/pages/Chat/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '@/store';
+import '../../style/iconfont.scss';
+import './view.scss';
 
 interface Params {
   id: string;
@@ -39,6 +39,10 @@ const GoodsDetail: React.FC = () => {
   }
 
   function contactSeller() {
+    if (!user) {
+      message.error('还未登陆，请先登陆！');
+      return false;
+    }
     if (!good) return false;
     dispatch(actions.putChatItem({
       id: `${user.phone}#${good.user.phone}`,

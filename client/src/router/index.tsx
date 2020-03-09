@@ -1,33 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import App from '@/pages/App';
-import Home from '@/pages/Home';
-import Profile from '@/pages/Profile';
-import GoodsDetail from '@/pages/GoodsDetail'
-import Release from '@/components/Release/view';
-import OrderPage from '@/pages/OrderPage/view';
-import Edit from '@/pages/Edit/view';
-import Chat from '@/pages/Chat';
+import useLogged from '@/Hooks/useLogged';
+import { Route, Redirect } from 'react-router-dom';
 
-const AppRouters = () => {
-  return (
-    <Router>
-      <Switch>
-        <App>
-          <Route path="/" exact component={Home} />
-          <Route path="/profile" render={(props) => {
-            console.log(props)
-            return <Profile />;
-          }} />
-          <Route path="/GoodsDetail/:id" component={GoodsDetail} />
-          <Route path="/release" component={Release} />
-          <Route path="/orderPage/:id" component={OrderPage} />
-          <Route path="/edit" component={Edit} />
-          <Route path="/chat" component={Chat} />
-        </App>
-      </Switch>
-    </Router>
-  )
+export interface IRoute {
+  path: string;
+  component: React.FC<any>;
+  isLogin: boolean;
+  exact?: boolean;
 }
 
-export default AppRouters;
+export default function renderRoute(routes: IRoute[]) {
+  return (
+    routes.map(item => {
+      return (
+        <Route
+          path={item.path}
+          exact={item.exact}
+          render={(props) => {
+            const logged = useLogged()
+            if (item.isLogin && !logged) {
+              return <Redirect to='/login' />
+            }
+            return <item.component {...props} />
+          }}
+        />
+      )
+    })
+  )
+}

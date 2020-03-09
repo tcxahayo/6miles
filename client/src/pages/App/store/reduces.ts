@@ -9,12 +9,6 @@ let initState = {
 }
 
 export default function app(state: IState = initState, action: actions.Type) {
-  if (action.type === actionTypes.CHANGE_LOGIN_MODAL) {
-    return Object.assign({}, state, {loginModal: !state.loginModal})
-  }
-  if (action.type === actionTypes.CHANGE_REGISTER_MODAL) {
-    return Object.assign({}, state, {registerModal: !state.registerModal})
-  }
   if (action.type === actionTypes.SET_USER_INFO)  {
     return Object.assign({}, state, {
       userInfo: action.value

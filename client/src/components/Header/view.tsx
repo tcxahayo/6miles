@@ -42,14 +42,7 @@ const Header: React.FC = () => {
       window.removeEventListener('scroll', onScroll);
     }
   }, [])
-  //登录注册
-  function showLoginModal() {
-    dispatch(actions.changeLoginModalAction());
-  }
 
-  function showRegisterModel() {
-    dispatch(actions.changeRegisterModalAction())
-  }
   //点击退出登录
   function longinOut() {
     clearToken();
@@ -75,8 +68,12 @@ const Header: React.FC = () => {
   function LoginMenu() {
     return (
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
-        <Menu.Item className="item" onClick={showRegisterModel}>注册</Menu.Item>
-        <Menu.Item className="item" onClick={showLoginModal}>登陆</Menu.Item>
+        <Menu.Item className="item">
+          <Link to="/register">注册</Link>
+        </Menu.Item>
+        <Menu.Item className="item">
+          <Link to="/login">登陆</Link>
+        </Menu.Item>
       </Menu>
     )
   }

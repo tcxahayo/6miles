@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import "./view.scss";
-import { actions } from "@/pages/App/store";
-import { useDispatch } from "react-redux";
-import "../../style/iconfont.scss";
 import { getCode, register } from "./api";
+import { Link, useHistory } from "react-router-dom";
+import "./view.scss";
+import "../../style/iconfont.scss";
 
 interface Form {
   nickname: string;
@@ -14,7 +13,7 @@ interface Form {
 }
 
 const Register: React.FC = () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const [form, setform] = useState<Form>();
   const [show, setShow] = useState(false);
   const [right, setRight] = useState(false);
@@ -22,10 +21,6 @@ const Register: React.FC = () => {
   const [send, setSend] = useState(true);
   const [time, setTime] = useState(60);
 
-  //取消注册
-  function handleModalClicked() {
-    dispatch(actions.changeRegisterModalAction());
-  }
   //获取code
   async function sendPhone() {
     setSend(false);
@@ -89,21 +84,17 @@ const Register: React.FC = () => {
     }
   }
   async function submit() {
-   if (form) {
-    const data = await register({ ...form });
-    if (data) {
-      login();
+    if (form) {
+      const data = await register({ ...form });
+      if (data) {
+        // 注册成功，跳转登陆页面
+        history.replace("/login");
+      }
     }
-   }
-  }
-  //跳转登录
-  function login() {
-    dispatch(actions.changeLoginModalAction());
-    handleModalClicked();
   }
 
   return (
-    <div className="c_register_container" onClick={handleModalClicked}>
+    <div className="c_register_container">
       <div className="content" onClick={e => e.stopPropagation()}>
         <div className="bg1"></div>
         <div className="message">
@@ -175,8 +166,10 @@ const Register: React.FC = () => {
           <div className="submit" onClick={submit}>
             确定
           </div>
-          <div className="login" onClick={login}>
-            已有账号，登录
+          <div className="login">
+            <Link to="/login" replace>
+              已有账号，登录
+            </Link>
           </div>
         </div>
       </div>
