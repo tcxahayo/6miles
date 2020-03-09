@@ -11,7 +11,7 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      {/* <LoginComponent /> */}
+      <LoginComponent />
     </div>
   )
 }
