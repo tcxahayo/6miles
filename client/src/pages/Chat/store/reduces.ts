@@ -32,6 +32,7 @@ export default function chat(state: IState[] = init, action: actions.Type): ISta
           from: message.from
         });
         im.setFirends(message.sessionId.split('#')[0], state);
+        state[i].chatLog = [...state[i].chatLog]
         return [...state]
       }
     }

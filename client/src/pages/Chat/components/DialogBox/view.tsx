@@ -4,20 +4,19 @@ import im from '@/lib/Im';
 import { IState } from '../../store';
 import News from '../News';
 import {State} from '@/store';
-import './view.scss';
 import { useSelector } from 'react-redux';
+import './view.scss';
 
 const DialogBox: React.FC<IState> = (props) => {
   const { chatLog, nickname, avatar, id } = props;
   const messageBox = useRef<HTMLDivElement>(null);
   const user = useSelector((state: State) => state.app.userInfo);
   const ref = useRef<HTMLTextAreaElement>(null);
-
   useEffect(() => {
-    if (messageBox.current){
+    if (messageBox.current && chatLog.length > 0){
       messageBox.current.scrollTop = messageBox.current.scrollHeight;
     }
-  }, [messageBox])
+  }, [messageBox, chatLog])
 
   const toId = useMemo(() => id.split('#')[1], [id])
 
@@ -27,7 +26,6 @@ const DialogBox: React.FC<IState> = (props) => {
       sendMessage();
     }
   }
-
 
   function sendMessage() {
     if (ref.current && ref.current.value) {

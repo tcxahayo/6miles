@@ -1,11 +1,10 @@
-import store from '@/store';
+import {getToken} from '@/lib/app';
 
 /**
  * 判断用户是否已经登陆
  */
 function useLogged() {
-  const userInfo = store.getState().app.userInfo
-  return userInfo;
+  return getToken();
 }
 
 export default useLogged;
