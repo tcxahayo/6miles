@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import './view.scss';
-import { Cascader, Input, Upload, Icon, Modal, message, Steps } from 'antd';
+import { Cascader, Input, Upload, Modal, message } from 'antd';
+import PlusOutlined from '@ant-design/icons';
 import { getCategory, ICategort } from '../../pages/Home/apis';
 import { releaseGoods } from './api'
+import './view.scss';
 
-const { Step } = Steps;
 const { TextArea } = Input;
 interface Form {
   area: string,
@@ -102,7 +102,7 @@ useEffect(() => {
     setPreviewVisible(true)
   }
   function handleChange({ fileList }: any) {
-    const data = fileList.map((item: any, index: number) => {
+    const data = fileList.map((item: any) => {
       if (item.status === 'done') {
         return item.response.data
       }
@@ -112,7 +112,7 @@ useEffect(() => {
 
   const uploadButton = (
     <div>
-      <Icon type="plus" />
+      <PlusOutlined />
       <div className="ant-upload-text">Upload</div>
     </div>
   );

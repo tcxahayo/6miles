@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IProps, collect } from './api';
 import { Link } from 'react-router-dom';
 import './view.scss';
@@ -6,10 +6,8 @@ import '../../style/iconfont.scss';
 import { message } from 'antd';
 
 
-
-
 const Goods: React.FC<IProps> = (props) => {
-  const { img, imageClassName, goodId, collection, index, area } = props;
+  const { img, imageClassName, goodId, collection, area } = props;
   const { title } = props;
   const { price } = props;
   const { userName } = props;
@@ -17,9 +15,8 @@ const Goods: React.FC<IProps> = (props) => {
   const [isCollect, setCollect] = useState(collection);
 
   async function stop(e: any) {
-    console.log(e.target.dataset.index)
     e.preventDefault()
-    const data = await collect({ goodsId: goodId, type: isCollect ? 2 : 1 })
+    await collect({ goodsId: goodId, type: isCollect ? 2 : 1 })
     if (props.changeIndex) {
       props.changeIndex()
       if (isCollect) {

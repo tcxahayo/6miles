@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { Menu, Button, Icon, Avatar } from 'antd';
+import { Menu, Button, Avatar } from 'antd';
+import { MessageOutlined, SearchOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { throttling } from '@/lib/loadsh';
 import { useDispatch, useSelector } from 'react-redux';
@@ -83,7 +84,7 @@ const Header: React.FC = () => {
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
         <Menu.Item className="item">
           <Link to="/chat" className="submenu-title-wrapper">
-            <Icon className="icon" type="message" />消息
+            <MessageOutlined className="icon" /> 消息
           </Link>
         </Menu.Item>
         <Menu.SubMenu
@@ -113,7 +114,7 @@ const Header: React.FC = () => {
         <form className="search" onSubmit={search}>
           <div className="left">
             <label htmlFor="search-input">
-              <Icon className="icon" type="search" />
+              <SearchOutlined className="icon" />
             </label>
             <input
               id="search-input"

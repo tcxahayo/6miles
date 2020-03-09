@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import useQuery from '@/Hooks/useQuery';
-import './view.scss';
 import bg1 from "../../imges/dash3.jpg";
 import Product from '@/components/Goods';
 import Masonry from 'react-masonry-component';
 import { Carousel } from 'antd';
-import { Link } from 'react-router-dom';
 import { getGoods, IGoods } from './apis';
-
-
+import './view.scss';
 
 const Goods: React.FC = () => {
   const query = useQuery();

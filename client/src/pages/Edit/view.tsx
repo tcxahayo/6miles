@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import './view.scss';
-import { Input, Upload, message, Modal } from 'antd';
+import { Input, Upload, message } from 'antd';
 import '../../style/iconfont.scss';
-import { LoadingOutline, PlusOutline } from '@ant-design/icons';
 
 const Edit: React.FC = () => {
   const [personal, setPersonal] = useState(true);
