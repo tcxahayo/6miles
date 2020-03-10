@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { State } from "@/store";
 import { useDispatch } from "react-redux";
 import { actions } from "@/pages/App/store";
-import { getUserInfo } from "../../components/Login/api";
+import { getUserInfo } from "../Login/component/Login/api";
 import Order from "@/pages/Order/view";
 import { getPublishList, IGoods, getCollectList } from "./apis";
 

@@ -7,7 +7,6 @@ import store from './store';
 import renderRouter, {IRoute} from '@/router';
 import App from '@/pages/App';
 import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 import '@/style/iconfont.scss';
 import './index.scss';
 
@@ -15,11 +14,6 @@ import './index.scss';
 const rootRouter: IRoute[] = [{
   component: Login,
   path: '/login',
-  exact: false,
-  isLogin: false
-}, {
-  component: Register,
-  path: '/register',
   exact: false,
   isLogin: false
 }, {

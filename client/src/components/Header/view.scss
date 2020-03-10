@@ -7,10 +7,14 @@
   transition: all 100ms;
 
   .row {
+    width: 100%;
+    min-width: 1160px;
+    margin: auto;
     height: 100%;
     display: flex;
     color: #333;
     align-items: center;
+    justify-content: space-between;
     // logo
     .logo {
       width: 200px;

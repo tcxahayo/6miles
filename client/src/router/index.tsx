@@ -14,6 +14,7 @@ export default function renderRoute(routes: IRoute[]) {
     routes.map(item => {
       return (
         <Route
+          key={item.path}
           path={item.path}
           exact={item.exact}
           render={(props) => {

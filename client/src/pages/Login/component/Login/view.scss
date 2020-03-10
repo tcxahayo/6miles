@@ -1,0 +1,25 @@
+.c_login_container{
+  background: url('../../../../imges/login-bg.jpg');
+  background-size: cover;
+  background-position: -160px;
+  height: 550px;
+
+  .form_container {
+    height: 100%;
+    box-sizing: content-box;
+    background: white;
+    width: 400px;
+    margin-left: auto;
+    overflow: auto;
+
+    .title {
+      text-align: center;
+      margin-top: 70px;
+    }
+    .form {
+      width: 300px;
+      margin: auto;
+      margin-top: 30px;
+    }
+  }
+}

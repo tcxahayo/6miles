@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Menu, Button, Avatar } from 'antd';
-import { MessageOutlined, SearchOutlined } from '@ant-design/icons';
+import { MessageOutlined, SearchOutlined, NotificationOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { throttling } from '@/lib/loadsh';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,9 +71,6 @@ const Header: React.FC = () => {
     return (
       <Menu className="menu" mode="horizontal" selectedKeys={[]}>
         <Menu.Item className="item">
-          <Link to="/register">注册</Link>
-        </Menu.Item>
-        <Menu.Item className="item">
           <Link to="/login">登陆</Link>
         </Menu.Item>
       </Menu>
@@ -133,7 +130,7 @@ const Header: React.FC = () => {
         </form>
         <div className="right">
           <Link to='/release'>
-            <Button className="btn" shape="round" type="primary" icon="notification">List It</Button>
+            <Button className="btn" shape="round" type="primary" icon={<NotificationOutlined />}>List It</Button>
           </Link>
           {userInfo ? <LoginedMenu /> : <LoginMenu />}
         </div>

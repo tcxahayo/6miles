@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Header from '@/components/Header';
 import { getToken } from '@/lib/app';
-import {getUserInfo} from '../../components/Login/api';
+import {getUserInfo} from '../Login/component/Login/api';
 import {useDispatch} from 'react-redux';
 import {actions} from '@/pages/App/store';
 import renderRoute from '@/router';
