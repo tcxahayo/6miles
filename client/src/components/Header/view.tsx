@@ -24,7 +24,8 @@ const Header: React.FC = () => {
 
   function search(e: FormEvent) {
     e.preventDefault()
-    value ? history.push(`/?key=${value}`) : history.push(`/`)
+    value ? history.push(`/?key=${value}`) : history.push(`/`);
+
   }
 
   useEffect(() => {

@@ -1,6 +1,11 @@
 import {request} from '@/lib/http';
 
-export interface IGoods {
+export interface IGoods{
+  totalSize:number,
+  list:IList []
+}
+
+export interface IList {
   images:string,
   price:number,
   title:string,
@@ -14,6 +19,6 @@ export interface IUser{
   nickname: string;
 }
 
-export function getGoods(){
-    return request<IGoods []>('/goods',{},'GET')
+export function getGoods(data:any){
+    return request<IGoods>('/goods',data,'GET')
 }
