@@ -9,42 +9,70 @@
         <result column="images" property="images" />
         <result column="desc" property="desc" />
         <result column="area" property="area" />
+        <result column="categoryId" property="categoryId" />
         <result column="collection" property="collection" />
         <result column="createDate" property="createDate" />
         <result column="updateDate" property="updateDate" />
         <association property="user">
             <result column="avatar" property="avatar" />
+            <result column="phone" property="phone" />
             <result column="nickname" property="nickname" />
             <result column="remake" property="remake" />
         </association>
     </resultMap>
 
-    <sql id="header">
-        select g.*, u.*, c.id collection
-        from bus_goods g inner join sys_user u on g.userId = u.id
+    <sql id="listJoin">
+        bus_goods g inner join sys_user u on g.userId = u.id
         left join bus_collect c on c.goodsId = g.id and c.userId = #{userId}
     </sql>
-    <sql id="footer">
-
+    <sql id="listWhere">
+        where 1 = 1
+        <if test="status != null and status != ''">
+            and g.status = #{status}
+        </if>
+        -- 商品id
+        <if test="goodsId != null and goodsId != ''">
+            and g.id = #{goodsId}
+        </if>
+        -- 排除商品id
+        <if test="excludeGoodsId != null and excludeGoodsId != ''">
+            and g.id != #{excludeGoodsId}
+        </if>
+        -- 分类id
+        <if test="categoryId != null and categoryId != ''">
+            and g.categoryId = #{categoryId}
+        </if>
+        -- 模糊搜索
+        <if test="keywords != null and keywords.length > 0">
+            and
+            <foreach collection="keywords" item="keyword" separator="or">
+                g.title like CONCAT('%', #{keyword}, '%')
+            </foreach>
+        </if>
     </sql>
 
     <!--  查询商品列表  -->
     <select id="selectGoodsList" resultMap="goodsListResult" parameterType="map">
-        <include refid="header" />
-        where 1 = 1
-        <if test="status != null">
-            and g.status = #{status}
-        </if>
-        -- 商品id
-        <if test="goodsId != null">
-            and g.id = #{goodsId}
-        </if>
+        select g.*, u.*, c.id collection from
+        <include refid="listJoin" />
+        <include refid="listWhere" />
         order by g.createDate desc
+        <if test="index != null and size != null ">
+            limit #{index}, #{size}
+        </if>
     </select>
+    <!--  查询商品列表总条数  -->
+    <select id="selectGoodsListCount" resultType="integer" parameterType="map">
+        select count(*) from
+        <include refid="listJoin" />
+        <include refid="listWhere" />
+    </select>
+
 
     <!--  查询出售列表  -->
     <select id="selectSellGoodsList" resultMap="goodsListResult" parameterType="string">
-        <include refid="header" />
+        select g.*, u.*, c.id collection from
+        <include refid="listJoin" />
         where g.userId = #{id}
         order by g.createDate desc
     </select>
@@ -52,7 +80,8 @@
 
     <!--  查询收藏列表  -->
     <select id="selectCollectGoods" resultMap="goodsListResult" parameterType="string">
-        <include refid="header" />
+        select g.*, u.*, c.id collection from
+        <include refid="listJoin" />
         right join bus_collect bc on g.id = bc.goodsId
         where bc.userId = #{userId}
         order by bc.createDate desc

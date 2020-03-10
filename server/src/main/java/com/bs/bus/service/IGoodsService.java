@@ -2,9 +2,12 @@ package com.bs.bus.service;
 
 import com.bs.bus.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bs.bus.vo.GoodsDetailVo;
 import com.bs.common.exception.GlobalException;
+import com.bs.common.utils.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,14 +32,17 @@ public interface IGoodsService extends IService<Goods> {
      * @return 商品详情
      * @throws Exception 异常信息
      */
-    Goods getGoodsById(String id, String  userId) throws Exception;
+    GoodsDetailVo getGoodsById(String id, String  userId) throws Exception;
 
     /**
-     * 查询商品
-     * @return 商品列表
+     * 分页查询商品
+     * @param params 查询条件
+     * @param page 页码
+     * @param size 每页的条数
+     * @return 分页后的商品列表
      * @throws Exception 自定义异常
      */
-    List<Goods> getGoodsList(String userId) throws Exception;
+    Page<List<Goods>> getGoodsList(Map<String, Object> params, Integer page, Integer size) throws Exception;
 
     /**
      * 查询用户发布的商品列表
