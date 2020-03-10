@@ -6,32 +6,37 @@ import { setToken } from "@/lib/app";
 import { login, getUserInfo } from "./api";
 import im from "@/lib/Im";
 import { Link, useHistory } from "react-router-dom";
+import { Form, Input, Button, Checkbox } from 'antd';
 
-interface Form {
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
+
+
+interface Forms {
   phone: string;
   password: string;
 }
 
 const Login: React.FC = () => {
+
   const dispatch = useDispatch();
   const history = useHistory();
-  const [form, setForm] = useState<Form>();
+  const [form, setForm] = useState<Forms>();
 
-  //获取登录信息
-  function getInfo(e: any) {
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "phone":
-        setForm(Object.assign({}, form, { phone: value }));
-        break;
-      case "password":
-        setForm(Object.assign({}, form, { password: value }));
-        break;
-    }
-  }
+  const onFinish = (values: any) => {
+    submit( { phone:values.phone,password:values.password })
+
+  };
+
   //点击登录
-  async function submit() {
-    const data = await login({ ...form });
+  async function submit(parms:any) {
+    const data = await login(parms);
     if (data) {
       setToken(data);
       userInfo();
@@ -52,30 +57,45 @@ const Login: React.FC = () => {
   return (
     <div className="c_login_container">
       <div className="content" onClick={e => e.stopPropagation()}>
-        <div className="bg1"></div>
-        <div className="message">
-          <div className="title">登录</div>
-          <div className="mid">
-            <label htmlFor="name" className="name">
-              账号:
-            </label>
-            <input type="text" id="name" name="phone" onChange={getInfo} />
-            <label htmlFor="password">密码:</label>
-            <input
-              type="text"
-              id="password"
-              name="password"
-              onChange={getInfo}
-            />
-          </div>
-          <div className="submit" onClick={submit}>
-            确定
-          </div>
-          <div className="login">
-            <Link to="/register" replace>
-              点击注册
-            </Link>
-          </div>
+        <div className="content-main">
+        <Form
+          {...layout}
+          name="basic"
+          onFinish={onFinish}
+        >
+          <Form.Item
+            label="手机号码"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your username!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="密码"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              登录
+        </Button>
+          </Form.Item>
+        </Form>
         </div>
       </div>
     </div>

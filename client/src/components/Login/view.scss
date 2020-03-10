@@ -2,13 +2,14 @@
   position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: linear-gradient(rgb(203, 235, 219), rgb(55, 148, 192)) !important;
     top: 0;
     left: 0;
     z-index: 500;
+    background: linear-gradient();
   .content{
-    width: 700px;
-    height: 500px;
+    width: 400px;
+    height: 200px;
     background: #fff;
     border-radius: 5px;
     position: fixed;
@@ -17,68 +18,9 @@
     transform: translateX(-50%) translateY(-50%);
     overflow: hidden;
     display: flex;
-    .bg1{
-      width: 250px;
-      height: 100%;
-      background: url('../../imges/headimg.jpg') -137px center;
-      background-size: cover;
-    }
-    .message{
-      width:450px;
-      height: 100%;
-      text-align: center;
-      .title{
-        margin: 30px 0;
-        font-size: 30px;
-        font-weight: 800;
-      }
-      .mid{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 80%;
-        margin: auto;
-        margin-left: 104px;
-        position: relative;
-        margin-top: 50px;
-        input{
-          border:none;
-          border-bottom: 1px solid #d9d9d9;
-          width: 75%;
-          margin-bottom: 30px;
-        }
-        label{
-          margin-top: 5px;
-        }
-        .send{
-          background: #d9d9d9;
-          width: 40px;
-          height: 25px;
-          position: absolute;
-          bottom: 10px;
-          right: 90px;
-          line-height: 25px;
-          border-radius: 5px;
-        }
-      }
-      .submit{
-        width: 170px;
-        background: rgba(255,28,52,1);
-        margin: auto;
-        margin-top: 40px;
-        height: 30px;
-        line-height: 30px;
-        color: #fff;
-        font-size: 16px;
-        border-radius: 10px;
-
-      }
-      .login{
-        margin-top: 10px;
-        font-size: 8px;
-        text-decoration: underline;
-        color: #d9d9d9;
-      }
+    padding-top: 25px;
+    .content-main{
+      margin: auto;
     }
   }
 
