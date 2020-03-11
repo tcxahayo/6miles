@@ -83,5 +83,13 @@ public class OrderController extends BaseController {
         return R.success("支付成功");
     }
 
-
+    @Authentication
+    @GetMapping("/cancel/{number}")
+    @ApiOperation(value = "支付订单", notes = "支付购买订单")
+    @ApiImplicitParam(name = "number", value = "订单编号", paramType = "path")
+    public R<Boolean> payOrder(@PathVariable("number") String number , HttpServletRequest request) throws Exception {
+        String userId = this.getUserIdByToken(request);
+        orderService.orderCancel(number, userId);
+        return R.success("订单取消成功");
+    }
 }

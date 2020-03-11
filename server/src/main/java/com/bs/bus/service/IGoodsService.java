@@ -26,13 +26,29 @@ public interface IGoodsService extends IService<Goods> {
     void addGoods(Goods goods) throws Exception;
 
     /**
+     * 修改商品信息
+     * @param goods 商品信息
+     * @throws Exception
+     */
+    void updateGoodsInfo(Goods goods) throws Exception;
+
+    /**
+     * 根据商品ID获取商品详情以及相关推荐
+     * @param id 商品id
+     * @param userId 用户id
+     * @return 商品详情
+     * @throws Exception 异常信息
+     */
+    GoodsDetailVo getDetailsAndRelated(String id, String  userId) throws Exception;
+
+    /**
      * 根据商品ID获取商品详情
      * @param id 商品id
      * @param userId 用户id
      * @return 商品详情
      * @throws Exception 异常信息
      */
-    GoodsDetailVo getGoodsById(String id, String  userId) throws Exception;
+    Goods getDetails(String id, String  userId) throws Exception;
 
     /**
      * 分页查询商品

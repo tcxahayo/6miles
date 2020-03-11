@@ -1,5 +1,6 @@
 package com.bs.bus.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bs.bus.entity.Goods;
 import com.bs.bus.mapper.GoodsMapper;
 import com.bs.bus.service.IGoodsService;
@@ -7,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bs.bus.vo.GoodsDetailVo;
 import com.bs.common.exception.GlobalException;
 import com.bs.common.utils.Page;
+import com.bs.system.entity.SysCode;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +44,19 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public GoodsDetailVo getGoodsById(String id, String  userId) throws Exception {
+    public void updateGoodsInfo(Goods goods) throws Exception {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>().eq("id", goods.getId()).eq("userId", goods.getUserId());
+        Goods oldGoods = this.getOne(queryWrapper);
+        if (ObjectUtils.isEmpty(oldGoods)) {
+            throw new GlobalException("商品信息不存在");
+        }
+        goods.setCreateDate(oldGoods.getCreateDate());
+        goods.setStatus(oldGoods.getStatus());
+        this.updateById(goods);
+    }
+
+    @Override
+    public GoodsDetailVo getDetailsAndRelated(String id, String  userId) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("goodsId", id);
         params.put("userId", userId);
@@ -65,6 +80,20 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         goodsDetailVo.setDetails(details);
         goodsDetailVo.setRelatedList(relatedList);
         return goodsDetailVo;
+    }
+
+    @Override
+    public Goods getDetails(String id, String userId) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("goodsId", id);
+        params.put("userId", userId);
+        params.put("index", 0);
+        params.put("size", 1);
+        List<Goods> list = goodsMapper.selectGoodsList(params);
+        if (list.size() == 0) {
+            throw new GlobalException("商品信息不存在");
+        }
+        return list.get(0);
     }
 
     @Override

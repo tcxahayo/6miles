@@ -50,6 +50,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (ObjectUtils.isEmpty(goods)) {
             throw new GlobalException("订单创建失败，商品信息不存在");
         }
+        if (goods.getUserId().equals(order.getUserId())) {
+            throw new GlobalException("订单创建失败，无法购买自己出售的商品");
+        }
         if (goods.getStatus() != Goods.STATUS_NORMAL) {
             throw new GlobalException("订单创建失败，非待出售商品");
         }
@@ -81,7 +84,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new GlobalException("订单信息不存在");
         }
         if (order.getStatus() != Order.STATUS_WAIT) {
-            throw new GlobalException("该订单已支付");
+            throw new GlobalException("订单异常");
         }
         order.setStatus(Order.STATUS_PAID);
         order.setPayType(orderPayVo.getType());
@@ -96,6 +99,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         boolean updateResult = goodsService.updateById(goods);
         if (!updateResult) {
             throw new GlobalException("订单支付失败，请稍后再试");
+        }
+    }
+
+    @Override
+    public void orderCancel(String number, String userId) throws Exception {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<Order>().eq("number", number).eq("userId", userId);
+        Order order = this.getOne(queryWrapper);
+        if (ObjectUtils.isEmpty(order)) {
+            throw new GlobalException("订单信息不存在");
+        }
+        if (order.getStatus() != Order.STATUS_WAIT) {
+            throw new GlobalException("订单不允许取消");
+        }
+        order.setStatus(Order.STATUS_CANCEL);
+        boolean result = this.updateById(order);
+        if (!result) {
+            throw new GlobalException("订单取消失败，请稍后再试");
         }
     }
 

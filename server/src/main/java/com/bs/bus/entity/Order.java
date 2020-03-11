@@ -36,8 +36,10 @@ public class Order extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int STATUS_CANCEL = 0; // 已取消
     public static final int STATUS_WAIT = 1; // 待付款
     public static final int STATUS_PAID = 2; // 已付款
+
 
     /**
      * 用户id

@@ -28,7 +28,7 @@
     <select id="selectOrderList" parameterType="com.bs.bus.entity.Order" resultMap="orderMap">
         select o.*, g.*, g.price gprice, g.id gid
         from bus_order o, bus_goods g
-        where o.goodsId = g.id and g.userId = #{userId}
+        where o.goodsId = g.id and o.userId = #{userId}
         <if test="id != null">
             and o.id = #{id}
         </if>

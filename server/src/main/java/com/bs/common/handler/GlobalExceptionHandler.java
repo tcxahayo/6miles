@@ -4,6 +4,7 @@ import com.bs.common.exception.AuthenticationException;
 import com.bs.common.utils.R;
 import com.bs.common.constants.CommonConstant;
 import com.bs.common.exception.GlobalException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -61,6 +62,16 @@ public class GlobalExceptionHandler {
     public R exceptionHandle() {
         return R.error(CommonConstant.PARAM_ERROR, "所需必要参数不存在");
     }
+
+    /**
+     * 请求的body体不存在异常处理
+     * @return
+     */
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public R httpMessageNotReadableHandle() {
+        return R.error(CommonConstant.PARAM_ERROR, "请求参数不存在");
+    }
+
 
     /**
      * validation注解校验异常类处理

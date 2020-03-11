@@ -88,16 +88,28 @@ public class GoodsController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation(value = "获取商品详情", notes = "商品详情")
     @ApiImplicitParam(paramType = "path", name = "id", value = "商品id")
-    public R<GoodsDetailVo> getById(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+    public R<Goods> getDetail(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
         String userId = null;
         try {
             String token = request.getHeader(CommonConstant.AUTHORIZATION_FLAG);
             userId = JwtUtil.getUserId(token);
         } catch (Exception e) {}
-        GoodsDetailVo goodsDetailVo = goodsService.getGoodsById(id, userId);
-        return R.selectSuccess(goodsDetailVo);
+        Goods goods = goodsService.getDetails(id, userId);
+        return R.selectSuccess(goods);
     }
 
+    @GetMapping("/details/{id}")
+    @ApiOperation(value = "获取商品详情以及相关推荐", notes = "商品详情")
+    @ApiImplicitParam(paramType = "path", name = "id", value = "商品id")
+    public R<GoodsDetailVo> getDetailsAndRelated(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+        String userId = null;
+        try {
+            String token = request.getHeader(CommonConstant.AUTHORIZATION_FLAG);
+            userId = JwtUtil.getUserId(token);
+        } catch (Exception e) {}
+        GoodsDetailVo goodsDetailVo = goodsService.getDetailsAndRelated(id, userId);
+        return R.selectSuccess(goodsDetailVo);
+    }
 
     @PostMapping
     @Authentication
@@ -108,6 +120,18 @@ public class GoodsController extends BaseController {
         goodsService.addGoods(goods);
         return R.postSuccess();
     }
+
+    @Authentication
+    @PutMapping("/{id}")
+    @ApiOperation(value = "修改商品", notes = "用户修改商品信息")
+    public R<Boolean> update(@PathVariable("id") String id, @Valid @RequestBody Goods goods, HttpServletRequest request) throws Exception {
+        String userId = this.getUserIdByToken(request);
+        goods.setUserId(userId);
+        goods.setId(id);
+        goodsService.updateGoodsInfo(goods);
+        return R.putSuccess();
+    }
+
 
     @Authentication
     @GetMapping("/sellList")

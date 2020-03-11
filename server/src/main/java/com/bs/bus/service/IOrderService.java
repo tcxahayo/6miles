@@ -31,6 +31,14 @@ public interface IOrderService extends IService<Order> {
     void orderPay(OrderPayVo orderPayVo) throws Exception;
 
     /**
+     * 取消订单
+     * @param number 订单编号
+     * @param userId 用户id
+     * @throws Exception 异常信息
+     */
+    void orderCancel(String number, String userId) throws Exception;
+
+    /**
      * 查询订单列表
      * @param userId 用户id
      * @param status 订单状态
