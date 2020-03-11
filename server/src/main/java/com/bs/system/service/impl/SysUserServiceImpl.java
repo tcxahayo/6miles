@@ -12,9 +12,16 @@ import com.bs.system.entity.SysUser;
 import com.bs.system.mapper.SysUserMapper;
 import com.bs.system.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bs.system.vo.UserEditVo;
+import com.bs.system.vo.UserVo;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +104,39 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public SysUser getUserByPhone(String phone) throws Exception {
         Wrapper<SysUser> userQueryWrapper = new QueryWrapper<SysUser>().eq("phone", phone);
         return this.getOne(userQueryWrapper);
+    }
+
+    @Override
+    public void updatePassword(String userId, String oldPassword, String newPassword) throws Exception {
+        SysUser sysUser = this.getById(userId);
+        String oldMd5Password = MD5Util.encryption(oldPassword + sysUser.getSalt());
+        // 判断原密码是否正确
+        if (!oldMd5Password.equals(sysUser.getPassword())) {
+            throw new GlobalException("原密码不正确");
+        }
+        // 判断新密码是否和原密码一致
+        String nowMd5Password = MD5Util.encryption(newPassword + sysUser.getSalt());
+        if (nowMd5Password.equals(oldMd5Password)) {
+            throw new GlobalException("新密码不可和原密码相同");
+        }
+        // 设置新盐和新密码
+        String salt = RandomStringUtils.randomGraph(30);
+        String newMd5Password = MD5Util.encryption(newPassword + salt);
+        sysUser.setPassword(newMd5Password);
+        sysUser.setSalt(salt);
+        this.updateById(sysUser);
+    }
+
+    @Override
+    public void updateInfo(String userId, UserEditVo userEditVo) throws Exception {
+        SysUser sysUser = this.getById(userId);
+        if (ObjectUtils.isEmpty(sysUser)) {
+            throw new GlobalException("用户信息不存在");
+        }
+        sysUser.setAvatar(userEditVo.getAvatar());
+        sysUser.setEmail(userEditVo.getEmail());
+        sysUser.setNickname(userEditVo.getNickname());
+        this.updateById(sysUser);
     }
 
 }

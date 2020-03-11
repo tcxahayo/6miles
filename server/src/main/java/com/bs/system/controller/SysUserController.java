@@ -10,6 +10,8 @@ import com.bs.common.utils.ValidatorUtil;
 import com.bs.system.entity.SysUser;
 import com.bs.system.service.ISysUserService;
 import com.bs.system.vo.RegisterVo;
+import com.bs.system.vo.UpdatePasswordVo;
+import com.bs.system.vo.UserEditVo;
 import com.bs.system.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -87,5 +89,26 @@ public class SysUserController extends BaseController {
     public R<Boolean> register(@RequestBody @Valid RegisterVo registerVo) throws Exception {
         sysUserService.register(registerVo);
         return R.success(true, "注册成功");
+    }
+
+
+    @Authentication
+    @PutMapping("/password/change")
+    @ApiResponse(code = 200, message = "是否修改成功")
+    @ApiOperation(value = "修改密码", notes = "用户在个人中心的修改密码")
+    public R<Boolean> updatePassword(HttpServletRequest request, @RequestBody @Valid UpdatePasswordVo passwordVo) throws Exception {
+        String id = this.getUserIdByToken(request);
+        sysUserService.updatePassword(id, passwordVo.getOldPassword(), passwordVo.getNewPassword());
+        return R.putSuccess(true);
+    }
+
+    @Authentication
+    @PutMapping("/info")
+    @ApiResponse(code = 200, message = "是否修改成功")
+    @ApiOperation(value = "修改用户资料", notes = "用户在个人中心的修改资料")
+    public R<Boolean> infoEdit(HttpServletRequest request, @RequestBody @Valid UserEditVo userEditVo) throws Exception {
+        String id = this.getUserIdByToken(request);
+        sysUserService.updateInfo(id, userEditVo);
+        return R.putSuccess(true);
     }
 }

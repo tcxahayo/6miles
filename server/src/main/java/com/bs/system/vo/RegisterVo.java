@@ -26,13 +26,13 @@ public class RegisterVo {
     private String phone;
 
     @NotBlank(message = "密码不能为空")
-    @Pattern(regexp = ValidatorUtil.REGEX_PASSWORD, message = "密码由数字或大小写字母组成，长度在6～16位之间")
+    @Pattern(regexp = ValidatorUtil.REGEX_PASSWORD, message = "密码只能包含数字和字母，长度在6～16位之间")
     @ApiParam("密码")
     @ApiModelProperty("密码")
     private String password;
 
     @NotBlank(message = "昵称不能为空")
-    @Size(min = 1, max = 10, message = "昵称长度在1～10位之间")
+    @Size(min = 1, max = 10, message = "昵称长度在1～8位之间")
     @ApiParam("昵称")
     @ApiModelProperty("昵称")
     private String nickname;
