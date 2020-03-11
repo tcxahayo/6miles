@@ -4,8 +4,9 @@ import com.bs.bus.entity.Goods;
 import com.bs.bus.mapper.GoodsMapper;
 import com.bs.bus.service.IGoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bs.bus.vo.GoodsDetailVo;
 import com.bs.common.exception.GlobalException;
-import org.apache.commons.lang3.ObjectUtils;
+import com.bs.common.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public Goods getGoodsById(String id, String  userId) throws Exception {
+    public GoodsDetailVo getGoodsById(String id, String  userId) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("goodsId", id);
         params.put("userId", userId);
@@ -48,15 +49,39 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         if (list.size() == 0) {
             throw new GlobalException("商品信息不存在");
         }
-        return list.get(0);
+        Goods details = list.get(0);
+        Map<String, Object> newParams = new HashMap<>();
+        // 排除当前的这个id
+        newParams.put("excludeGoodsId", id);
+        newParams.put("userId", userId);
+        newParams.put("status", Goods.STATUS_NORMAL);
+        newParams.put("categoryId", details.getCategoryId());
+        // 只加载8条
+        newParams.put("index", 0);
+        newParams.put("size", 4);
+        List<Goods> relatedList = goodsMapper.selectGoodsList(newParams);
+
+        GoodsDetailVo goodsDetailVo = new GoodsDetailVo();
+        goodsDetailVo.setDetails(details);
+        goodsDetailVo.setRelatedList(relatedList);
+        return goodsDetailVo;
     }
 
     @Override
-    public List<Goods> getGoodsList(String userId) throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put("status", Goods.STATUS_NORMAL);
-        params.put("userId", userId);
-        return goodsMapper.selectGoodsList(params);
+    public Page<List<Goods>> getGoodsList(Map<String, Object> params, Integer page, Integer size) throws Exception {
+        Integer totalCount = goodsMapper.selectGoodsListCount(params);
+        params.put("index", (page - 1) * size);
+        params.put("size", size);
+        List<Goods> list = goodsMapper.selectGoodsList(params);
+
+        Page<List<Goods>> pageData = new Page<>();
+        pageData.setPage(page);
+        pageData.setSize(size);
+        pageData.setTotalSize(totalCount);
+
+        pageData.setTotalPage((int)Math.ceil(Math.ceil((double)totalCount / (double)size)));
+        pageData.setList(list);
+        return pageData;
     }
 
     @Override

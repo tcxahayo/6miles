@@ -19,10 +19,19 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 
     /**
      * 查询商品列表
+     * @param params 查询条件
      * @return 商品列表
      * @throws Exception 异常信息
      */
     List<Goods> selectGoodsList(Map<String, Object> params) throws Exception;
+
+    /**
+     * 查询商品列表总条数
+     * @param params 查询条件
+     * @return 商品列表总条数
+     * @throws Exception 异常信息
+     */
+    Integer selectGoodsListCount(Map<String, Object> params) throws Exception;
 
     /**
      * 查询商品发布列表
@@ -39,4 +48,10 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @throws Exception 异常信息
      */
     List<Goods> selectCollectGoods(String userId) throws Exception;
+
+    public static void main(String[] args) {
+        String s = "ha 哈哈哈哈   嗯呐    和 ";
+        String [] arr = s.split("\\s+");
+        System.out.println(arr.length);
+    }
 }
