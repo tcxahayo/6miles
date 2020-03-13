@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Row, Col, Popover, message } from "antd";
-import { MobileOutlined, LockOutlined, SafetyOutlined, ExclamationCircleFilled, UserOutlined } from '@ant-design/icons'
+import { MobileOutlined, LockOutlined, SafetyOutlined, ExclamationCircleFilled, UserOutlined } from '@ant-design/icons';
 import { getCode, register } from "./api";
 import "./view.scss";
 

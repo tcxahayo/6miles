@@ -31,9 +31,10 @@ export function request<T>(url = '', params = {}, method: Method = 'POST') {
     }, config)).then(({ status, data }) => {
       if (status === 200) {
         if (data.status === Status.SUCCESS) {
-          resolve(data.data)
+          resolve(data.data);
         } else if (data.status === Status.ERROR) {
           message.error(data.msg);
+          reject();
         } else if (data.status === Status.PARAM_ERROR) {
           message.error(data.msg);
         } else if (data.status === Status.LOGIN_AUTHORIZATION) {

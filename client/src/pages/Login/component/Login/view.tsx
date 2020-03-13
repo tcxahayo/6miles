@@ -24,12 +24,12 @@ const Login: React.FC<IProps> = (props) => {
 
   //点击登录
   async function submit(parms: any) {
-    setLoading(true);
-    const data = await login(parms);
-    if (data) {
+    try {
+      setLoading(true);
+      const data = await login(parms);
       setToken(data);
       userInfo();
-    } else {
+    } finally {
       setLoading(false);
     }
   }

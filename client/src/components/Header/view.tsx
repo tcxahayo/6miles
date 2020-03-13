@@ -3,20 +3,18 @@ import { Menu, Button, Avatar } from 'antd';
 import { MessageOutlined, SearchOutlined, NotificationOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { throttling } from '@/lib/loadsh';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { State } from '@/store';
-import { actions } from '@/pages/App/store';
-import im from '@/lib/Im';
-import { clearToken } from '@/lib/app';
 import logo1 from '../../imges/logo1.png';
 import small from '../../imges/small.jpg';
+import useLogout from '@/Hooks/useLogout';
 import '../../style/iconfont.scss';
 import './view.scss';
 
 
 const Header: React.FC = () => {
   const userInfo = useSelector((state: State) => state.app.userInfo);
-  const dispatch = useDispatch();
+  const logout = useLogout();
   const [scrollIsTop, setScrollIsTop] = useState(true);
   const [value, setValue] = useState('');
   const history = useHistory();
@@ -47,10 +45,7 @@ const Header: React.FC = () => {
 
   //点击退出登录
   function longinOut() {
-    clearToken();
-    dispatch(actions.setUserInfo(null));
-    im.signout();
-    history.push('/');
+    logout();
   }
   //定位
   useEffect(() => {

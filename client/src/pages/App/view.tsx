@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
 import Header from '@/components/Header';
 import { getToken } from '@/lib/app';
-import {getUserInfo} from '../Login/component/Login/api';
-import {useDispatch} from 'react-redux';
-import {actions} from '@/pages/App/store';
+import useUserInfo from '@/Hooks/useUserInfo';
 import renderRoute from '@/router';
 import './view.scss';
 
@@ -54,18 +52,13 @@ const routes = [{
 }]
 
 const App: React.FC = (props) => {
-  const dispatch = useDispatch();
+  const userInfo = useUserInfo();
   useEffect(()=>{
     const token = getToken();
     if (token) {
-      (async function() {
-        const data = await getUserInfo();
-        if (data) {
-          dispatch(actions.setUserInfo(data));
-        }
-      })()
+      userInfo()
     }
-  },[dispatch])
+  },[userInfo])
 
   return (
     <>

@@ -1,0 +1,23 @@
+.edit_info_container {
+  .title {
+    font-size: 24px;
+    padding: 20px 40px;
+  }
+  .form {
+    width: 500px;
+
+    .upload {
+      height: 100px;
+      width: 100px;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
