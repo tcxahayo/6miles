@@ -11,7 +11,7 @@ export interface IProps {
   imageClassName?: string;
   goodId:string;
   collection:boolean;
-  index:number;
+  index?:number;
   area?:string;
   changeIndex?:()=>void
 }

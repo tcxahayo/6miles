@@ -7,15 +7,19 @@ import { Carousel } from 'antd';
 import { getGoods, IGoods, IList } from './apis';
 import { Spin, message } from 'antd';
 import './view.scss';
+import {useParams,useLocation} from "react-router-dom";
 
 const Goods: React.FC = () => {
   const query = useQuery();
+  let location = useLocation();
+  // const id = location.state.id
   const key = query.get('key');
   const [goods, setGoods] = useState<IList[]>([]);
   const [page, setPage] = useState(1);
   const [isEnd, setEnd] = useState(false);
   const [isContiue, setContiue] = useState(false);
-
+  const [id,setId] = useState('');
+  console.log(location)
   console.log(key)
   function list(data: any) {
     getGoods(data).then((res) => {
@@ -36,11 +40,15 @@ const Goods: React.FC = () => {
   }
   useEffect(()=>{
     setGoods([]);
-    setPage(1)
+    setPage(1);
   },[key])
+  useEffect(()=>{
+    setGoods([]);
+    setPage(1);
+  },[location])
   useEffect(() => {
-    list({ page: page, size: 10, keyword: key })
-  }, [page , key])
+    list({ page: page, size: 10, keyword: key, categoryId:location.state !== undefined ? location.state.id:id})
+  }, [page , key, location])
 
   function handScroll(event: any) {
     console.log("节流")

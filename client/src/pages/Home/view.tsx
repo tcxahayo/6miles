@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import Goods from "@/pages/Goods";
 import { getCategory, ICategort } from "./apis";
 import "../../style/iconfont.scss";
 import "./view.scss";
 
 const Home: React.FC = () => {
+  let history = useHistory();
   const [overlay, setOverlay] = useState<boolean>(false);
   const [category, setCategory] = useState<ICategort[]>([]);
 
@@ -27,6 +28,17 @@ const Home: React.FC = () => {
       });
     });
   }, []);
+  //点击商品分类
+  function showGoods(e:any){
+    console.log(e.target.dataset.id)
+    const id = e.target.dataset.id;
+    history.push({
+      pathname:"/",
+      state:{
+        id:id
+      }
+    })
+  }
 
   return (
     <div className="home_container">
@@ -49,7 +61,7 @@ const Home: React.FC = () => {
                 </div>
                 <ul className="wrapper">
                   {item.children.map(item => {
-                    return <li key={item.id}>{item.title}</li>;
+                    return <li key={item.id} onClick={showGoods} data-id={item.id}>{item.title}</li>;
                   })}
                 </ul>
               </li>

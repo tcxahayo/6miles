@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Cascader, Input, message, Modal } from "antd";
 import city from "@/components/CitySelect/data";
-import { getDetail, Param } from "../GoodsDetail/api";
+import { conectGoods, Param,Details } from "../GoodsDetail/api";
 import { useParams, useHistory } from "react-router-dom";
-import { subOrder, pay } from "./api";
+import { subOrder, pay, Number } from "./api";
 import zhiImg from "@/imges/zhi.png";
 import chatImg from "@/imges/chat.png";
 import "./view.scss";
@@ -22,16 +22,16 @@ const OrderPage: React.FC = () => {
   const { id } = useParams();
   const history = useHistory();
   const option = city;
-  const [good, setGood] = useState<Param>();
-  const [img, setImg] = useState();
-  const [address, setAddress] = useState();
-  const [main, setMain] = useState();
+  const [good, setGood] = useState<Details>();
+  const [img, setImg] = useState<string>();
+  const [address, setAddress] = useState<string>(" ");
+  const [main, setMain] = useState<string>(" ");
   const [form, setForm] = useState<Form>();
   const [visible, setVisible] = useState(false);
   const [zhi, setZhi] = useState(true);
   const [chat, setChat] = useState(false);
   const [type, setType] = useState(1);
-  const [number, setNumber] = useState();
+  const [number, setNumber] = useState<Number>();
 
   const handleOk = (e: any) => {
     setVisible(false);
@@ -60,18 +60,18 @@ const OrderPage: React.FC = () => {
   //商品详情
   useEffect(() => {
     async function detail(id: any) {
-      const data = await getDetail(id);
+      const data = await conectGoods(id);
       if (data) {
-        const img1 = data.images.split(",")[0];
+        const img1 = data.details.images.split(',')[0];
         setImg(img1);
-        setGood(data);
+        setGood(data.details);
       }
     }
     detail(id);
   }, [id]);
 
   //支付接口
-  async function payMoney(number: string, type: number) {
+  async function payMoney(number: any, type: number) {
     const data = await pay({ number, type });
     if (data) {
       success();

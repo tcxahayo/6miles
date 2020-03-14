@@ -2,12 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { Carousel, message } from "antd";
 import Product from "@/components/Goods";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { getDetail, Param } from "./api";
+import { getDetail, Param , conectGoods,Details,RelatedList} from "./api";
 import { actions } from "@/pages/Chat/store";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "@/store";
 import "../../style/iconfont.scss";
 import "./view.scss";
+import {collect} from '../../components/Goods/api'
 
 interface Params {
   id: string;
@@ -19,24 +20,30 @@ const GoodsDetail: React.FC = () => {
   const user = useSelector((state: State) => state.app.userInfo);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [collect, setCollect] = useState(false);
-  const [good, setGood] = useState<Param>();
+  const [isCollect, setCollect] = useState(false);
+  const [good, setGood] = useState<Details>();
   const [img, setImg] = useState<string[]>([]);
+  const [conGoods, setConectGood] = useState<RelatedList []>([]);
 
-  useEffect(() => {
-    (async function() {
-      const data = await getDetail(id);
-      if (data) {
-        const imgs = data.images.split(",");
-        setImg(imgs);
-        setGood(data);
-      }
-    })();
-  }, [id]);
+useEffect(()=>{
+  conectGood(id)
+},[id])
+  //相关商品
+  async function conectGood(param:any){
+    const data = await conectGoods(param);
+    if(data){
+      const imgs = data.details.images.split(",");
+      setGood(data.details);
+      setImg(imgs);
+      setCollect(data.details.collection)
+      setConectGood(data.relatedList)
+    }
+  }
 
   function changeCarousel(index: number) {
     carousel.current.goTo(index);
   }
+
 
   function contactSeller() {
     if (!user) {
@@ -56,7 +63,14 @@ const GoodsDetail: React.FC = () => {
   }
 
   function collection() {
-    setCollect(!collect);
+    if(good){
+        setCollection({goodsId:good.id,type:isCollect?2:1})
+        setCollect(!isCollect);
+    }
+  }
+  //取消收藏和收藏接口
+  async function setCollection(params:any){
+    const data = await collect(params);
   }
 
   return (
@@ -102,13 +116,13 @@ const GoodsDetail: React.FC = () => {
           <div className="add_collection" onClick={collection}>
             <i
               className="iconfont icno-collection"
-              style={collect ? { color: "red" } : { color: "#fff" }}
+              style={isCollect ? { color: "red" } : { color: "#fff" }}
             >
               &#xe614;
             </i>
             <span
               className="collection_txt"
-              style={collect ? { color: "red" } : { color: "#fff" }}
+              style={isCollect ? { color: "red" } : { color: "#fff" }}
             >
               收藏
             </span>
@@ -128,28 +142,23 @@ const GoodsDetail: React.FC = () => {
       <div className="similer_goods">
         <div className="title">相关产品</div>
         <div className="similer_box">
-          <Product
-            imageClassName="img2"
-            img="https://tse1-mm.cn.bing.net/th?id=OIP.1e3YVW946dgy5uJH764JXwHaFj&w=141&h=106&c=8&rs=1&qlt=90&pid=3.1&rm=2"
-            title="啊哈哈"
-            price={23}
-            userName="12"
-            avatar="23"
-            collection={true}
-            index={123}
-            goodId="123"
-          />
-          <Product
-            imageClassName="img2"
-            img="http://img15.3lian.com/2015/f1/87/d/49.jpg"
-            title="啊哈哈"
-            price={23}
-            userName="12"
-            avatar="23"
-            collection={true}
-            index={123}
-            goodId="123"
-          />
+          {
+            conGoods.map((item,index)=>{
+              return(
+                <Product
+                key={item.id}
+                imageClassName="img2"
+                img={item.images.split(',')[0]}
+                title={item.title}
+                price={item.price}
+                userName={item.user.nickname}
+                avatar={item.user.avatar}
+                collection={true}
+                goodId={item.id}
+              />
+              )
+            })
+          }
         </div>
       </div>
     </div>
