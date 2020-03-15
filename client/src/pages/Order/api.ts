@@ -6,7 +6,8 @@ export interface IOrder{
   price:number,
   goodsId:string,
   goods:IGoods,
-  createDate:string
+  createDate:string,
+  id:string
 }
 export interface IGoods {
   images:string,
@@ -22,4 +23,8 @@ export interface IUser{
 
 export function getOrderList(data?:any){
   return request<IOrder []>('/order',data,'GET')
+}
+
+export function cancelOrder(number:any){
+  return request('/order/cancel/'+ number,{},'GET')
 }

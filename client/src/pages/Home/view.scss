@@ -54,6 +54,10 @@
           li {
             width: 250px;
             height: 42px;
+            &:hover{
+              color: #f40;
+              text-decoration: underline;
+            }
           }
         }
       }

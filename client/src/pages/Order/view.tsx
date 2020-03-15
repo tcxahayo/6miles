@@ -1,12 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./view.scss";
-import { getOrderList, IOrder } from "./api";
+import { getOrderList, IOrder, cancelOrder } from "./api";
 import "../../style/iconfont.scss";
 import { Link, useHistory } from "react-router-dom";
 import { Modal, message } from "antd";
 import zhiImg from "@/imges/zhi.png";
 import chatImg from "@/imges/chat.png";
-import { pay } from "../OrderPage/api";
+import { pay, Number } from "../OrderPage/api";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+const { confirm } = Modal;
 
 interface Props {
   // getLength:Function,
@@ -24,7 +26,7 @@ const Order: React.FC<Props> = props => {
   const [zhi, setZhi] = useState(true);
   const [chat, setChat] = useState(false);
   const [type, setType] = useState(1);
-  const [number, setNumber] = useState();
+  const [number, setNumber] = useState<Number>();
   const history = useHistory();
 
   const handleOk = (e: any) => {
@@ -51,7 +53,7 @@ const Order: React.FC<Props> = props => {
     setType(2);
   }
   //支付接口
-  async function payMoney(number: string, type: number) {
+  async function payMoney(number: any, type: number) {
     const data = await pay({ number, type });
     if (data) {
       success();
@@ -78,8 +80,12 @@ const Order: React.FC<Props> = props => {
   //订单列表
   async function orderList(status?: any) {
     const data = await getOrderList({ status });
-    setList(data);
-    props.getLength(data.length);
+
+    const newData = data.filter((item,index)=>{
+      return item.status !==0
+    })
+    setList(newData);
+    props.getLength(newData.length);
   }
   //点击全部订单
   function allOrder() {
@@ -106,6 +112,32 @@ const Order: React.FC<Props> = props => {
   function setPay(e: any) {
     setVisible(true);
     setNumber(e.target.dataset.id);
+  }
+  //取消订单
+  function showConfirm(e: any) {
+    const number = e.target.dataset.number;
+    confirm({
+      title: '确定删除',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除订单将不可恢复',
+      okText: '确定',
+      cancelText: '取消',
+      onOk() {
+        return new Promise((resolve, reject) => {
+          cancel(number)
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'));
+      },
+      onCancel() { },
+    });
+  }
+  //取消订单接口
+  async function cancel(parms: any) {
+    const data = await cancelOrder(parms);
+    if(data){
+      orderList();
+      orderList(1);
+    }
   }
   return (
     <Fragment>
@@ -157,45 +189,47 @@ const Order: React.FC<Props> = props => {
             {(all &&
               list.length &&
               list.map((item, index) => {
-                return (
-                  <Fragment>
-                    <div className="all_order">
-                      <div className="orderTop">
-                        <div className="orderTime">
-                          {item.createDate.substring(0, 10)}
+                  return (
+                    <Fragment>
+                      <div className="all_order">
+                        <div className="orderTop">
+                          <div className="orderTime">
+                            {item.createDate.substring(0, 10)}
+                          </div>
+                          <div className="orderNum">
+                            <span className="orderTxt1">订单号: </span>
+                            <span className="orderTxt2">{item.number}</span>
+                          </div>
                         </div>
-                        <div className="orderNum">
-                          <span className="orderTxt1">订单号: </span>
-                          <span className="orderTxt2">{item.number}</span>
+                        <div className="orderMid">
+                          <div className="pImg">
+                            <img
+                              className="img1"
+                              src={item.goods.images.split(",")[0]}
+                              alt=""
+                            />
+                          </div>
+                          <div className="pTitle">{item.goods.title}</div>
+                          <div className="pPrice">￥{item.price}</div>
+                          <div className="warn">举报违规</div>
+                          <Link to={'/orderDetail/'+item.id} className="order_detail">
+                          <div>订单详情</div>
+                          </Link>
+                          {item.status === 1 && (
+                            <div className="opeator">
+                              <div className="buy">付款</div>
+                              <div className="cancel" onClick={showConfirm} data-number={item.number}>取消订单</div>
+                            </div>
+                          )}
+                          {item.status === 2 && (
+                            <div className="opeator">
+                              <div className="buied">已付款</div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <div className="orderMid">
-                        <div className="pImg">
-                          <img
-                            className="img1"
-                            src={item.goods.images.split(",")[0]}
-                            alt=""
-                          />
-                        </div>
-                        <div className="pTitle">{item.goods.title}</div>
-                        <div className="pPrice">￥{item.price}</div>
-                        <div className="warn">举报违规</div>
-                        <div className="order_detail">订单详情</div>
-                        {item.status === 1 && (
-                          <div className="opeator">
-                            <div className="buy">付款</div>
-                            <div className="cancel">取消订单</div>
-                          </div>
-                        )}
-                        {item.status === 2 && (
-                          <div className="opeator">
-                            <div className="buied">已付款</div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Fragment>
-                );
+                    </Fragment>
+                  );
               })) ||
               (all && (
                 <Fragment>
@@ -231,7 +265,9 @@ const Order: React.FC<Props> = props => {
                         <div className="pTitle">{item.goods.title}</div>
                         <div className="pPrice">￥{item.price}</div>
                         <div className="warn">举报违规</div>
-                        <div className="order_detail">订单详情</div>
+                        <Link to={'/orderDetail/'+item.id} className="order_detail">
+                          <div>订单详情</div>
+                          </Link>
                         {item.status === 1 && (
                           <div className="opeator">
                             <div
@@ -241,7 +277,7 @@ const Order: React.FC<Props> = props => {
                             >
                               付款
                             </div>
-                            <div className="cancel">取消订单</div>
+                            <div className="cancel" onClick={showConfirm} data-number={item.number}>取消订单</div>
                           </div>
                         )}
                         {item.status === 2 && (
@@ -288,11 +324,13 @@ const Order: React.FC<Props> = props => {
                         <div className="pTitle">{item.goods.title}</div>
                         <div className="pPrice">￥{item.price}</div>
                         <div className="warn">举报违规</div>
-                        <div className="order_detail">订单详情</div>
+                        <Link to={'/orderDetail/'+item.id} className="order_detail">
+                          <div>订单详情</div>
+                          </Link>
                         {item.status === 1 && (
                           <div className="opeator">
                             <div className="buy">付款</div>
-                            <div className="cancel">取消订单</div>
+                            <div className="cancel" onClick={showConfirm} data-number={item.number}>取消订单</div>
                           </div>
                         )}
                         {item.status === 2 && (

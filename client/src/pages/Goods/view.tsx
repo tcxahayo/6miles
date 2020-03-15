@@ -4,26 +4,30 @@ import bg1 from "../../imges/dash3.jpg";
 import Product from '@/components/Goods';
 import Masonry from 'react-masonry-component';
 import { Carousel } from 'antd';
-import { getGoods, IGoods, IList } from './apis';
-import { Spin, message } from 'antd';
+import { getGoods, IList } from './apis';
 import './view.scss';
-import {useParams,useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
+
+interface Parms{
+  page:Number,
+  size:Number,
+  keyword?:string,
+  categoryId?:string
+}
 
 const Goods: React.FC = () => {
   const query = useQuery();
   let location = useLocation();
-  // const id = location.state.id
   const key = query.get('key');
   const [goods, setGoods] = useState<IList[]>([]);
   const [page, setPage] = useState(1);
   const [isEnd, setEnd] = useState(false);
   const [isContiue, setContiue] = useState(false);
-  const [id,setId] = useState('');
-  console.log(location)
-  console.log(key)
+
+
   function list(data: any) {
     getGoods(data).then((res) => {
-      if (res.list.length != 0) {
+      if (res.list.length !== 0) {
         res.list.map((item, index) => {
           item.images = item.images.split(",")[0];
           return item
@@ -31,7 +35,8 @@ const Goods: React.FC = () => {
         setGoods((goods)=>{
           return goods.concat(res.list)
         });
-        setContiue(true)
+        setContiue(true);
+        setEnd(false);
       } else {
         setEnd(true);
         setContiue(false);
@@ -47,7 +52,17 @@ const Goods: React.FC = () => {
     setPage(1);
   },[location])
   useEffect(() => {
-    list({ page: page, size: 10, keyword: key, categoryId:location.state !== undefined ? location.state.id:id})
+    let data:Parms = {
+      page:page,
+      size:10
+    }
+    if(key){
+      data.keyword = key
+    }
+    if(location.state && location.state.id){
+      data.categoryId = location.state.id
+    }
+    list(data)
   }, [page , key, location])
 
   function handScroll(event: any) {
@@ -63,9 +78,7 @@ const Goods: React.FC = () => {
 
     if (height < 80 && !isEnd ) {
         setPage(t => t+1 )
-
     }
-    console.log(height)
   }
   useEffect(() => {
     window.addEventListener('scroll', throttle(handScroll, 1000));
@@ -86,9 +99,6 @@ const Goods: React.FC = () => {
       }
     }
   }
-
-  // window.addEventListener('scroll', handScroll)
-
   return (
     <div className="goods_container">
       <div>

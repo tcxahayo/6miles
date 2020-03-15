@@ -1,0 +1,142 @@
+@import '../../style/common.scss';
+
+.orderDetail_container{
+  @include container;
+  .content{
+    @include content;
+    .title{
+      @include title;
+    }
+    .orderDetail{
+      display: flex;
+      margin-top: 10px;
+      border: 1px solid #DDD;
+      .orderLeft{
+        width: 35%;
+        border-right: 1px solid #DDD;
+        .orderInfo{
+          height: 29px;
+          border-bottom: 1px solid #DDD;
+          background-color: #F3F3F3;
+          line-height: 29px;
+          color: #333;
+          font-size: 12px;
+          font-weight: 700;
+          padding-left: 10px;
+        }
+        .mainInfo{
+          display: flex;
+          padding: 5px 10px;
+          .tip{
+            width: 25%;
+            text-align: center;
+          }
+          .txt{
+            flex: 1;
+          }
+        }
+      }
+      .orderRight{
+        width: 66%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .one{
+          display: flex;
+          .icno1{
+            color: #52c41a;
+            font-size: 24px;
+            margin-right: 5px;
+          }
+          .icno2{
+            color: #f40;
+            font-size: 24px;
+            margin-right: 5px;
+          }
+          .pay{
+            &:hover{
+              color: #f40;
+              cursor: pointer;
+            }
+          }
+          .stuta{
+            font-weight: bold;
+          }
+        }
+        .two{
+          display: flex;
+
+        }
+      }
+    }
+    .goodDetail{
+      margin-top: 20px;
+      border: 1px solid #DDD;
+      color: #666;
+      .meuns{
+        display: flex;
+        .tip1{
+          width: 20%;
+          text-align: center;
+        }
+        .tip2{
+          width: 40%;
+          text-align: center;
+        }
+        .tip3{
+          width: 30%;
+          text-align: center;
+        }
+        .tip4{
+          width: 10%;
+          text-align: center;
+        }
+      }
+      .logistiInfo{
+        display: flex;
+        background: #E3EEFF;
+        padding: 5px 0;
+        .serial{
+          margin-left: 20px;
+        }
+        .logCompany{
+          margin: 0 40px;
+        }
+      }
+      .goodInfo{
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        .img{
+          width: 20%;
+          text-align: center;
+          .img1{
+            width: 100px;
+            border-radius: 5px;
+          }
+        }
+        .name{
+          width: 40%;
+          text-align: center;
+        }
+        .price{
+          width: 30%;
+          text-align: center;
+        }
+        .statu{
+          width: 10%;
+          text-align: center;
+        }
+      }
+    }
+    .totle{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding: 10px 0;
+      padding-right: 10px;
+      background: #F3F3F3;
+    }
+  }
+}

@@ -101,7 +101,7 @@ const OrderPage: React.FC = () => {
         setForm(Object.assign({}, form, { name: value }));
         break;
       case "phone":
-        setForm(Object.assign({}, form, { phone: value }));
+          setForm(Object.assign({}, form, { phone: value }));
         break;
       case "mark":
         setForm(Object.assign({}, form, { remark: value }));
@@ -117,13 +117,18 @@ const OrderPage: React.FC = () => {
   }
   //点击提交
   function submit() {
-    submitOrder(
-      Object.assign(form, {
-        goodsId: good?.id,
-        price: good?.price,
-        address: address + main
-      })
-    );
+    if(form?.phone && form?.name){
+      submitOrder(
+        Object.assign(form, {
+          goodsId: good?.id,
+          price: good?.price,
+          address: address + main
+        })
+      )
+    }else{
+      console.log(form)
+      message.error('请输入完整信息')
+    }
   }
   //成功提示
   const success = () => {

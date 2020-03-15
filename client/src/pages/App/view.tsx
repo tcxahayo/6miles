@@ -13,6 +13,7 @@ import Release from '@/components/Release/view';
 import OrderPage from '@/pages/OrderPage/view';
 import Edit from '@/pages/Edit/view';
 import Chat from '@/pages/Chat';
+import OrderDetail from '@/pages/OrderDetail'
 
 const routes = [{
   component: Home,
@@ -49,6 +50,11 @@ const routes = [{
   path: '/chat',
   exact: false,
   isLogin: true
+},{
+  component:OrderDetail,
+  path:'/orderDetail/:id',
+  exact:false,
+  isLogin:true
 }]
 
 const App: React.FC = (props) => {
