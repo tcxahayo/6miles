@@ -2,13 +2,13 @@ import React, { useRef, useState, useEffect, Fragment } from "react";
 import { Carousel, message } from "antd";
 import Product from "@/components/Goods";
 import { Link, useParams, useHistory, useLocation } from "react-router-dom";
-import { getDetail, Param, conectGoods, Details, RelatedList } from "./api";
+import { conectGoods, Details, RelatedList } from "./api";
 import { actions } from "@/pages/Chat/store";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "@/store";
 import "../../style/iconfont.scss";
 import "./view.scss";
-import { collect } from '../../components/Goods/api';
+import { collect } from "../../components/Goods/api";
 
 interface Params {
   id: string;
@@ -29,13 +29,13 @@ const GoodsDetail: React.FC = () => {
 
   useEffect(() => {
     if (location.state && location.state.profile) {
-      setProfile(location.state.profile)
+      setProfile(location.state.profile);
     }
-  }, [location])
+  }, [location]);
 
   useEffect(() => {
-    conectGood(id)
-  }, [id])
+    conectGood(id);
+  }, [id]);
   //相关商品以及商品详情
   async function conectGood(param: any) {
     const data = await conectGoods(param);
@@ -43,15 +43,14 @@ const GoodsDetail: React.FC = () => {
       const imgs = data.details.images.split(",");
       setGood(data.details);
       setImg(imgs);
-      setCollect(data.details.collection)
-      setConectGood(data.relatedList)
+      setCollect(data.details.collection);
+      setConectGood(data.relatedList);
     }
   }
 
   function changeCarousel(index: number) {
     carousel.current.goTo(index);
   }
-
 
   function contactSeller() {
     if (!user) {
@@ -72,22 +71,22 @@ const GoodsDetail: React.FC = () => {
 
   function collection() {
     if (good) {
-      setCollection({ goodsId: good.id, type: isCollect ? 2 : 1 })
+      setCollection({ goodsId: good.id, type: isCollect ? 2 : 1 });
       setCollect(!isCollect);
     }
   }
   //取消收藏和收藏接口
   async function setCollection(params: any) {
-    const data = await collect(params);
+    await collect(params);
   }
   //跳转修改
-  function editGoods(){
+  function editGoods() {
     history.push({
-      pathname:'/release',
-      state:{
-        id:id
+      pathname: "/release",
+      state: {
+        id: id
       }
-    })
+    });
   }
 
   return (
@@ -130,51 +129,61 @@ const GoodsDetail: React.FC = () => {
             <i className="iconfont icno-address">&#xe629;</i>
             <span className="address_info">{good?.area}</span>
           </div>
-          {
-            profile && (
-              <Fragment>
-                <div className="add_collection" onClick={collection} style={{ visibility: 'hidden' }}>
-                  <i
-                    className="iconfont icno-collection"
-                    style={isCollect ? { color: "red" } : { color: "#fff" }}
-                  >
-                    &#xe614;
-            </i>
-                  <span
-                    className="collection_txt"
-                    style={isCollect ? { color: "red" } : { color: "#fff" }}
-                  >
-                    收藏
-            </span>
-                </div>
-                  <div onClick={editGoods} className="buy">修改</div>
-                <div className="chat" onClick={contactSeller} style={{visibility:'hidden'}}>联系卖家</div>
-              </Fragment>
-            ) || (
-              <Fragment>
-                <div className="add_collection" onClick={collection}>
-                  <i
-                    className="iconfont icno-collection"
-                    style={isCollect ? { color: "red" } : { color: "#fff" }}
-                  >
-                    &#xe614;
-            </i>
-                  <span
-                    className="collection_txt"
-                    style={isCollect ? { color: "red" } : { color: "#fff" }}
-                  >
-                    收藏
-            </span>
-                </div>
-                <div className="chat" onClick={contactSeller}>
-                  联系卖家
-          </div>
-                <Link to={"/orderPage/" + good?.id}>
-                  <div className="buy">购买</div>
-                </Link>
-              </Fragment>
-            )
-          }
+          {(profile && (
+            <Fragment>
+              <div
+                className="add_collection"
+                onClick={collection}
+                style={{ visibility: "hidden" }}
+              >
+                <i
+                  className="iconfont icno-collection"
+                  style={isCollect ? { color: "red" } : { color: "#fff" }}
+                >
+                  &#xe614;
+                </i>
+                <span
+                  className="collection_txt"
+                  style={isCollect ? { color: "red" } : { color: "#fff" }}
+                >
+                  收藏
+                </span>
+              </div>
+              <div onClick={editGoods} className="buy">
+                修改
+              </div>
+              <div
+                className="chat"
+                onClick={contactSeller}
+                style={{ visibility: "hidden" }}
+              >
+                联系卖家
+              </div>
+            </Fragment>
+          )) || (
+            <Fragment>
+              <div className="add_collection" onClick={collection}>
+                <i
+                  className="iconfont icno-collection"
+                  style={isCollect ? { color: "red" } : { color: "#fff" }}
+                >
+                  &#xe614;
+                </i>
+                <span
+                  className="collection_txt"
+                  style={isCollect ? { color: "red" } : { color: "#fff" }}
+                >
+                  收藏
+                </span>
+              </div>
+              <div className="chat" onClick={contactSeller}>
+                联系卖家
+              </div>
+              <Link to={"/orderPage/" + good?.id}>
+                <div className="buy">购买</div>
+              </Link>
+            </Fragment>
+          )}
           <div className="goods_info">
             <div className="title_desc">商品描述</div>
             <div className="desc">{good?.desc}</div>
@@ -184,23 +193,21 @@ const GoodsDetail: React.FC = () => {
       <div className="similer_goods">
         <div className="title">相关产品</div>
         <div className="similer_box">
-          {
-            conGoods.map((item, index) => {
-              return (
-                <Product
-                  key={item.id}
-                  imageClassName="img2"
-                  img={item.images.split(',')[0]}
-                  title={item.title}
-                  price={item.price}
-                  userName={item.user.nickname}
-                  avatar={item.user.avatar}
-                  collection={true}
-                  goodId={item.id}
-                />
-              )
-            })
-          }
+          {conGoods.map((item, index) => {
+            return (
+              <Product
+                key={item.id}
+                imageClassName="img2"
+                img={item.images.split(",")[0]}
+                title={item.title}
+                price={item.price}
+                userName={item.user.nickname}
+                avatar={item.user.avatar}
+                collection={true}
+                goodId={item.id}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

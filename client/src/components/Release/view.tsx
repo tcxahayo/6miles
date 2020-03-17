@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { Cascader, Input, Upload, Modal, message } from 'antd';
 import PlusOutlined from '@ant-design/icons';
 import { getCategory, ICategort } from '../../pages/Home/apis';
@@ -9,58 +9,62 @@ import { conectGoods, Details } from '@/pages/GoodsDetail/api'
 
 const { TextArea } = Input;
 interface Form {
-  area: string,
-  categoryId: string,
-  desc: string,
-  id: string,
-  images: string,
-  latitude: number,
-  longitude: number,
-  price: number,
-  title: string
+  area?: string,
+  categoryId?: string,
+  desc?: string,
+  id?: string,
+  images?: string,
+  latitude?: number,
+  longitude?: number,
+  price?: number,
+  title?: string
 }
 
 const Release: React.FC = () => {
   const location = useLocation();
-  const [category, setCategory] = useState<ICategort[]>([]);
-  const [form, setForm] = useState<Form>();
+  const [category, setCategory] = useState<ICategort[]>();
+  const [form, setForm] = useState<Form>({});
   const [goods, setGoods] = useState<Details>();
-  const [categoryId, setCategoryId] = useState<any>();
-  const [parentId, setParentId] = useState<any>();
+  const [categoryValue, setCategoryValue] = useState<string[]>();
 
+  // 获取商品详情
   useEffect(() => {
     if (location.state && location.state.id) {
       (async function () {
         const data = await conectGoods(location.state.id);
-        if (data) {
-          getCategory().then((res) => {
-            res.forEach((item) => {
-              item.children.forEach((citem) => {
-                if (citem.id == data.details.categoryId) {
-                  console.log(citem.id, citem.parentId);
-                  setParentId(citem.parentId);
-                  setCategoryId([citem.parentId,citem.id])
-                }
-              })
-            })
-            setCategory(res)
-          })
-        }
+        setGoods(data.details);
       })()
     }
   }, [location])
 
-  function getValue(value: any) {
-    const categoryIds = value[1];
-    setForm(Object.assign({}, form, { categoryId: categoryIds }))
-    console.log(categoryIds)
-  }
   //获取商品分类
-  // useEffect(function () {
-  //   getCategory().then((res) => {
-  //     setCategory(res);
-  //   })
-  // }, [])
+  useEffect(function () {
+    getCategory().then((res) => {
+      setCategory(res);
+    })
+  }, [])
+
+  // 获取商品详情中的分类
+  useEffect(() => {
+    if (category && goods) {
+      category.forEach((item) => {
+        item.children.forEach((citem) => {
+          if (citem.id === goods.categoryId) {
+            setCategoryValue([citem.parentId,citem.id])
+          }
+        })
+      })
+    }
+  }, [category, goods])
+
+
+  useEffect(() => {
+    if (categoryValue) {
+      setForm(form => Object.assign({}, form, { categoryId: categoryValue[1] }))
+    }
+  }, [categoryValue])
+
+
   //获取定位
   //定位
   useEffect(() => {
@@ -83,13 +87,13 @@ const Release: React.FC = () => {
     const value = e.target.value;
     switch (e.target.name) {
       case "name":
-        setForm(Object.assign({}, form, { title: value }));
+        setForm(form => Object.assign({}, form, { title: value }))
         break
       case "price":
-        setForm(Object.assign({}, form, { price: value }));
+        setForm(form => Object.assign({}, form, { price: value }))
         break
       case "desc":
-        setForm(Object.assign({}, form, { desc: value }));
+        setForm(form => Object.assign({}, form, { desc: value }))
     }
   }
   //文件上传
@@ -154,8 +158,8 @@ const Release: React.FC = () => {
               options={category}
               placeholder="选择分类"
               className="cascader"
-              onChange={getValue}
-              defaultValue={categoryId}
+              onChange={(value) => setCategoryValue(value)}
+              value={categoryValue}
             >
             </Cascader>
           </div>

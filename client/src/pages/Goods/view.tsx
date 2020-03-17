@@ -87,6 +87,7 @@ const Goods: React.FC = () => {
     }
   }, [])
   //节流
+
   function throttle(fun: any, delay: any) {
     var prev = Date.now();
     return function () {
