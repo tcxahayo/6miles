@@ -4,6 +4,8 @@ import PlusOutlined from '@ant-design/icons';
 import { getCategory, ICategort } from '../../pages/Home/apis';
 import { releaseGoods } from './api'
 import './view.scss';
+import { useLocation } from "react-router-dom";
+import { conectGoods, Details } from '@/pages/GoodsDetail/api'
 
 const { TextArea } = Input;
 interface Form {
@@ -19,50 +21,63 @@ interface Form {
 }
 
 const Release: React.FC = () => {
+  const location = useLocation();
   const [category, setCategory] = useState<ICategort[]>([]);
   const [form, setForm] = useState<Form>();
+  const [goods, setGoods] = useState<Details>();
+  const [categoryId, setCategoryId] = useState<any>();
+  const [parentId, setParentId] = useState<any>();
 
-  const options2 = category.map((item, index) => {
-    return {
-      code: item.id,
-      name: item.title,
-      items: item.children.map((item, index) => {
-        return {
-          code: item.id,
-          name: item.title
+  useEffect(() => {
+    if (location.state && location.state.id) {
+      (async function () {
+        const data = await conectGoods(location.state.id);
+        if (data) {
+          getCategory().then((res) => {
+            res.forEach((item) => {
+              item.children.forEach((citem) => {
+                if (citem.id == data.details.categoryId) {
+                  console.log(citem.id, citem.parentId);
+                  setParentId(citem.parentId);
+                  setCategoryId([citem.parentId,citem.id])
+                }
+              })
+            })
+            setCategory(res)
+          })
         }
-      })
+      })()
     }
-  })
+  }, [location])
 
   function getValue(value: any) {
-    const categoryIds = value.join("_");
+    const categoryIds = value[1];
     setForm(Object.assign({}, form, { categoryId: categoryIds }))
     console.log(categoryIds)
   }
   //获取商品分类
-  useEffect(function () {
-    getCategory().then((res) => {
-      setCategory(res);
+  // useEffect(function () {
+  //   getCategory().then((res) => {
+  //     setCategory(res);
+  //   })
+  // }, [])
+  //获取定位
+  //定位
+  useEffect(() => {
+    AMap.plugin('AMap.CitySearch', function () {
+      var citySearch = new AMap.CitySearch()
+      citySearch.getLocalCity(function (status: any, result: any) {
+        if (status === 'complete' && result.info === 'OK') {
+          // 查询成功，result即为当前所在城市信息
+          const lat = result.bounds.xc.lat;
+          const lng = result.bounds.xc.lng;
+          const province = result.province;
+          const city = result.city
+          setForm(Object.assign({}, form, { latitude: lat, longitude: lng, area: province + ' , ' + city }));
+        }
+      })
     })
   }, [])
-  //获取定位
-//定位
-useEffect(() => {
-  AMap.plugin('AMap.CitySearch', function () {
-    var citySearch = new AMap.CitySearch()
-    citySearch.getLocalCity(function (status:any, result:any) {
-      if (status === 'complete' && result.info === 'OK') {
-        // 查询成功，result即为当前所在城市信息
-        const lat = result.bounds.xc.lat;
-        const lng = result.bounds.xc.lng;
-        const province = result.province;
-        const city = result.city
-        setForm(Object.assign({}, form, { latitude: lat, longitude: lng, area: province +' , '+ city }));
-      }
-    })
-  })
-}, [])
   //获取用户输入信息
   function changeValue(e: any) {
     const value = e.target.value;
@@ -107,7 +122,7 @@ useEffect(() => {
         return item.response.data
       }
     }).join(',');
-    setForm(Object.assign({}, form, { images: data}));
+    setForm(Object.assign({}, form, { images: data }));
   }
 
   const uploadButton = (
@@ -126,6 +141,7 @@ useEffect(() => {
     }
   }
 
+
   return (
     <Fragment>
       <div className="c_relese_container">
@@ -134,11 +150,12 @@ useEffect(() => {
           <div className="classTxt">商品分类：</div>
           <div className="class_content">
             <Cascader
-              fieldNames={{ label: 'name', value: 'code', children: 'items' }}
-              options={options2}
+              fieldNames={{ label: 'title', value: 'id', children: 'children' }}
+              options={category}
               placeholder="选择分类"
               className="cascader"
               onChange={getValue}
+              defaultValue={categoryId}
             >
             </Cascader>
           </div>

@@ -12,7 +12,8 @@ export interface Details{
   desc:string,
   area:string,
   user:User,
-  collection:boolean
+  collection:boolean,
+  categoryId:string
 }
 export interface RelatedList{
   id:string,

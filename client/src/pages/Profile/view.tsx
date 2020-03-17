@@ -203,6 +203,7 @@ const Profile: React.FC = () => {
                       collection={item.collection}
                       index={index}
                       goodId={item.id}
+                      profile={true}
                     />
                   </Fragment>
                 );

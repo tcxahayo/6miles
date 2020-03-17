@@ -13,7 +13,8 @@ export interface IProps {
   collection:boolean;
   index?:number;
   area?:string;
-  changeIndex?:()=>void
+  changeIndex?:()=>void;
+  profile?:boolean;
 }
 
 export function collect(data:any){

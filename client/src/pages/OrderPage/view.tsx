@@ -24,8 +24,8 @@ const OrderPage: React.FC = () => {
   const option = city;
   const [good, setGood] = useState<Details>();
   const [img, setImg] = useState<string>();
-  const [address, setAddress] = useState<string>(" ");
-  const [main, setMain] = useState<string>(" ");
+  const [address, setAddress] = useState<string>();
+  const [main, setMain] = useState<string>();
   const [form, setForm] = useState<Form>();
   const [visible, setVisible] = useState(false);
   const [zhi, setZhi] = useState(true);
@@ -117,7 +117,7 @@ const OrderPage: React.FC = () => {
   }
   //点击提交
   function submit() {
-    if(form?.phone && form?.name){
+    if(form?.phone && form?.name && main && address){
       submitOrder(
         Object.assign(form, {
           goodsId: good?.id,
