@@ -98,7 +98,7 @@ const GoodsDetail: React.FC = () => {
               {img.map((item: any, index: any) => {
                 return (
                   <div className="img">
-                    <img src={item} alt="" />
+                    <img src={item} key={item.id} alt="" />
                   </div>
                 );
               })}

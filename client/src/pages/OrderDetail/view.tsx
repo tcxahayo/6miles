@@ -22,7 +22,7 @@ const OrderDetail: React.FC = () => {
 
   useEffect(() => {
     detail(id)
-  }, [])
+  }, [id])
 
   async function detail(param: any) {
     const data = await orderDetail(param);
@@ -112,12 +112,12 @@ const OrderDetail: React.FC = () => {
               </div>
               <div className="mainInfo">
                 {
-                  order?.status === 2 && (
+                  (order?.status === 2 && (
                     <Fragment>
                       <div className="tip">支付时间：</div>
                       <div className="txt">{order?.updateDate}</div>
                     </Fragment>
-                  ) || (
+                  )) || (
                     <Fragment>
                       <div className="tip">下单时间：</div>
                       <div className="txt">{order?.updateDate}</div>
@@ -129,7 +129,7 @@ const OrderDetail: React.FC = () => {
             </div>
             <div className="orderRight">
               {
-                order?.status === 2 && (
+                (order?.status === 2 && (
                   <Fragment>
                     <div className="one">
                       <CheckCircleTwoTone className="icno1" />
@@ -141,7 +141,7 @@ const OrderDetail: React.FC = () => {
                       <div className="logistic">韵达快递 运单号：1234567890</div>
                     </div>
                   </Fragment>
-                ) || (
+                )) || (
                   <Fragment>
                     <div className="one">
                       <CloseCircleFilled className="icno2" />
@@ -171,11 +171,11 @@ const OrderDetail: React.FC = () => {
               <div className="name">{order?.goods.title}</div>
               <div className="price">￥ {order?.goods.price}</div>
               {
-                order?.status === 2 && (
+                (order?.status === 2 && (
                   <Fragment>
                     <div className="statu">交易成功</div>
                   </Fragment>
-                ) || (
+                )) || (
                   <Fragment>
                     <div className="statu">待支付</div>
                   </Fragment>

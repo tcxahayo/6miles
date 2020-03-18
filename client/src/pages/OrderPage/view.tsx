@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Cascader, Input, message, Modal } from "antd";
 import city from "@/components/CitySelect/data";
-import { conectGoods, Param,Details } from "../GoodsDetail/api";
+import { conectGoods,Details } from "../GoodsDetail/api";
 import { useParams, useHistory } from "react-router-dom";
 import { subOrder, pay, Number } from "./api";
 import zhiImg from "@/imges/zhi.png";

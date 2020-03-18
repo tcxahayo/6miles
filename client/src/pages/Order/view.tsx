@@ -191,7 +191,7 @@ const Order: React.FC<Props> = props => {
               list.map((item, index) => {
                   return (
                     <Fragment>
-                      <div className="all_order">
+                      <div className="all_order"  key={item.id}>
                         <div className="orderTop">
                           <div className="orderTime">
                             {item.createDate.substring(0, 10)}
@@ -244,7 +244,7 @@ const Order: React.FC<Props> = props => {
               list.map((item, index) => {
                 return (
                   <Fragment>
-                    <div className="all_order">
+                    <div className="all_order" key={item.id}>
                       <div className="orderTop">
                         <div className="orderTime">
                           {item.createDate.substring(0, 10)}
@@ -303,7 +303,7 @@ const Order: React.FC<Props> = props => {
               list.map((item, index) => {
                 return (
                   <Fragment>
-                    <div className="all_order">
+                    <div className="all_order" key={item.id}>
                       <div className="orderTop">
                         <div className="orderTime">
                           {item.createDate.substring(0, 10)}

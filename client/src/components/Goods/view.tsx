@@ -15,7 +15,6 @@ const Goods: React.FC<IProps> = (props) => {
   const [isCollect, setCollect] = useState(collection);
   const history = useHistory();
 
-  console.log(profile)
   async function stop(e: any) {
     e.preventDefault()
     await collect({ goodsId: goodId, type: isCollect ? 2 : 1 })
@@ -49,7 +48,7 @@ const Goods: React.FC<IProps> = (props) => {
   return (
     <div className="c_goods_container">
       {
-        profile && (
+        (profile && (
           <Fragment>
             <div onClick={editGoods} className="box">
               <img src={img} alt="小鸟" className={`img1 ${imageClassName}`} />
@@ -68,7 +67,7 @@ const Goods: React.FC<IProps> = (props) => {
               </div>
             </div>
           </Fragment>
-        ) || (
+        )) || (
           <Fragment>
             <Link to={"/GoodsDetail/" + goodId} className="box">
               <img src={img} alt="小鸟" className={`img1 ${imageClassName}`} />

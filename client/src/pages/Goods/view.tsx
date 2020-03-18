@@ -6,13 +6,13 @@ import Masonry from 'react-masonry-component';
 import { Carousel } from 'antd';
 import { getGoods, IList } from './apis';
 import './view.scss';
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-interface Parms{
-  page:Number,
-  size:Number,
-  keyword?:string,
-  categoryId?:string
+interface Parms {
+  page: Number,
+  size: Number,
+  keyword?: string,
+  categoryId?: string
 }
 
 const Goods: React.FC = () => {
@@ -32,7 +32,7 @@ const Goods: React.FC = () => {
           item.images = item.images.split(",")[0];
           return item
         })
-        setGoods((goods)=>{
+        setGoods((goods) => {
           return goods.concat(res.list)
         });
         setContiue(true);
@@ -43,27 +43,27 @@ const Goods: React.FC = () => {
       }
     })
   }
-  useEffect(()=>{
-    setGoods([]);
-    setPage(1);
-  },[key])
-  useEffect(()=>{
-    setGoods([]);
-    setPage(1);
-  },[location])
   useEffect(() => {
-    let data:Parms = {
-      page:page,
-      size:10
+    setGoods([]);
+    setPage(1);
+  }, [key])
+  useEffect(() => {
+    setGoods([]);
+    setPage(1);
+  }, [location])
+  useEffect(() => {
+    let data: Parms = {
+      page: page,
+      size: 10
     }
-    if(key){
+    if (key) {
       data.keyword = key
     }
-    if(location.state && location.state.id){
+    if (location.state && location.state.id) {
       data.categoryId = location.state.id
     }
     list(data)
-  }, [page , key, location])
+  }, [page, key, location])
 
   function handScroll(event: any) {
     console.log("节流")
@@ -76,8 +76,8 @@ const Goods: React.FC = () => {
     // 距离页面底部的高度
     const height = scrollHeight - scrollTop - clientHeight;
 
-    if (height < 80 && !isEnd ) {
-        setPage(t => t+1 )
+    if (height < 80 && !isEnd) {
+      setPage(t => t + 1)
     }
   }
   useEffect(() => {
@@ -130,16 +130,16 @@ const Goods: React.FC = () => {
         }
       </Masonry>
       {
-        isContiue && (
+        (isContiue && (
           <div className="more">
             下拉更多
           </div>
-        )
+        ))
       }
       {
-        isEnd && (
+        (isEnd && (
           <div className="end">没有更多了</div>
-        )
+        ))
       }
 
     </div>
