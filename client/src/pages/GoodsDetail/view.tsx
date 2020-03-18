@@ -27,6 +27,7 @@ const GoodsDetail: React.FC = () => {
   const [conGoods, setConectGood] = useState<RelatedList[]>([]);
   const [profile, setProfile] = useState(false);
 
+
   useEffect(() => {
     if (location.state && location.state.profile) {
       setProfile(location.state.profile);
@@ -36,6 +37,12 @@ const GoodsDetail: React.FC = () => {
   useEffect(() => {
     conectGood(id);
   }, [id]);
+
+  useEffect(()=>{
+    if(good?.user.phone === user?.phone){
+      setProfile(true)
+    }
+  },[user])
   //相关商品以及商品详情
   async function conectGood(param: any) {
     const data = await conectGoods(param);
@@ -97,8 +104,8 @@ const GoodsDetail: React.FC = () => {
             <Carousel ref={carousel}>
               {img.map((item: any, index: any) => {
                 return (
-                  <div className="img">
-                    <img src={item} key={item.id} alt="" />
+                  <div className="img"  key={item.id}>
+                    <img src={item} alt="" />
                   </div>
                 );
               })}

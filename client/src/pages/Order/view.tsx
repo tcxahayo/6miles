@@ -27,12 +27,17 @@ const Order: React.FC<Props> = props => {
   const [chat, setChat] = useState(false);
   const [type, setType] = useState(1);
   const [number, setNumber] = useState<Number>();
+  const [logistics, setLogistics] = useState(false);
   const history = useHistory();
+
 
   const handleOk = (e: any) => {
     setVisible(false);
     payMoney(number, type);
   };
+  const handleOk2 = () => {
+    setLogistics(false)
+  }
   const handleCancel = (e: any) => {
     setVisible(false);
     error();
@@ -81,8 +86,8 @@ const Order: React.FC<Props> = props => {
   async function orderList(status?: any) {
     const data = await getOrderList({ status });
 
-    const newData = data.filter((item,index)=>{
-      return item.status !==0
+    const newData = data.filter((item, index) => {
+      return item.status !== 0
     })
     setList(newData);
     props.getLength(newData.length);
@@ -113,6 +118,10 @@ const Order: React.FC<Props> = props => {
     setVisible(true);
     setNumber(e.target.dataset.id);
   }
+  //点击查看物流
+  function cheackLogisti() {
+    setLogistics(true)
+  }
   //取消订单
   function showConfirm(e: any) {
     const number = e.target.dataset.number;
@@ -134,7 +143,7 @@ const Order: React.FC<Props> = props => {
   //取消订单接口
   async function cancel(parms: any) {
     const data = await cancelOrder(parms);
-    if(data){
+    if (data) {
       orderList();
       orderList(1);
     }
@@ -167,6 +176,64 @@ const Order: React.FC<Props> = props => {
             </div>
           </div>
         </Modal>
+        <Modal
+          title="物流"
+          visible={logistics}
+          onOk={handleOk2}
+          closable={false}
+        >
+          <div className="modelBox2">
+            <div className="one">
+              <div className="companyName">物流公司:<span className="name">一家快递</span></div>
+              <div className="orderNumber">运单号码：<span className="number">123456789</span></div>
+            </div>
+            <ul>
+              <li>
+                <span className="data">2020.1.20</span>
+                <span className="time">16:56:43</span>
+                <span className="txt">包裹正在等待揽收</span>
+              </li>
+              <li>
+                <span className="data hidden">2020.1.20</span>
+                <span className="time">23:27:10</span>
+                <span className="txt">【深圳市】广东深圳公司龙岗区英泰集包分部 已揽收</span>
+              </li>
+
+              <li>
+                <span className="data">2020.1.21</span>
+                <span className="time">1:13:59</span>
+                <span className="txt">【深圳市】已离开 广东深圳公司龙岗区英泰集包分部；发往 四川成都地区包</span>
+              </li>
+              <li>
+                <span className="data hidden">2020.1.20</span>
+                <span className="time">03:32:08</span>
+                <span className="txt">【深圳市】已到达 广东深圳公司</span>
+              </li>
+              <li>
+                <span className="data hidden">2020.1.20</span>
+                <span className="time">03:39:08</span>
+                <span className="txt">【深圳市】已离开 广东深圳公司；发往 四川成都分拨中心</span>
+              </li>
+
+
+              <li>
+                <span className="data">2020.1.22</span>
+                <span className="time">10:28:55</span>
+                <span className="txt">【成都市】已到达 四川成都分拨中心</span>
+              </li>
+              <li>
+                <span className="data hidden">2020.1.20</span>
+                <span className="time">10:41:12</span>
+                <span className="txt">【成都市】已离开 四川成都分拨中心；发往 四川成都武侯区南门一公司</span>
+              </li>
+              <li>
+                <span className="data hidden">2020.1.20</span>
+                <span className="time">14:06:55</span>
+                <span className="txt">成都市】四川成都武侯区南门一公司派件员：张贵清 电话：18782048477 当前正在为您派件</span>
+              </li>
+            </ul>
+          </div>
+        </Modal>
         <div className="order_content">
           <div className="order_menu">
             <div
@@ -189,47 +256,48 @@ const Order: React.FC<Props> = props => {
             {(all &&
               list.length &&
               list.map((item, index) => {
-                  return (
-                    <Fragment>
-                      <div className="all_order"  key={item.id}>
-                        <div className="orderTop">
-                          <div className="orderTime">
-                            {item.createDate.substring(0, 10)}
-                          </div>
-                          <div className="orderNum">
-                            <span className="orderTxt1">订单号: </span>
-                            <span className="orderTxt2">{item.number}</span>
-                          </div>
+                return (
+                  <Fragment>
+                    <div className="all_order" key={item.id}>
+                      <div className="orderTop">
+                        <div className="orderTime">
+                          {item.createDate.substring(0, 10)}
                         </div>
-                        <div className="orderMid">
-                          <div className="pImg">
-                            <img
-                              className="img1"
-                              src={item.goods.images.split(",")[0]}
-                              alt=""
-                            />
-                          </div>
-                          <div className="pTitle">{item.goods.title}</div>
-                          <div className="pPrice">￥{item.price}</div>
-                          <div className="warn">举报违规</div>
-                          <Link to={'/orderDetail/'+item.id} className="order_detail">
-                          <div>订单详情</div>
-                          </Link>
-                          {item.status === 1 && (
-                            <div className="opeator">
-                              <div className="buy">付款</div>
-                              <div className="cancel" onClick={showConfirm} data-number={item.number}>取消订单</div>
-                            </div>
-                          )}
-                          {item.status === 2 && (
-                            <div className="opeator">
-                              <div className="buied">已付款</div>
-                            </div>
-                          )}
+                        <div className="orderNum">
+                          <span className="orderTxt1">订单号: </span>
+                          <span className="orderTxt2">{item.number}</span>
                         </div>
                       </div>
-                    </Fragment>
-                  );
+                      <div className="orderMid">
+                        <div className="pImg">
+                          <img
+                            className="img1"
+                            src={item.goods.images.split(",")[0]}
+                            alt=""
+                          />
+                        </div>
+                        <div className="pTitle">{item.goods.title}</div>
+                        <div className="pPrice">￥{item.price}</div>
+                        <div className="warn">举报违规</div>
+                        <Link to={'/orderDetail/' + item.id} className="order_detail">
+                          <div>订单详情</div>
+                        </Link>
+                        {item.status === 1 && (
+                          <div className="opeator">
+                            <div className="buy">付款</div>
+                            <div className="cancel" onClick={showConfirm} data-number={item.number}>取消订单</div>
+                          </div>
+                        )}
+                        {item.status === 2 && (
+                          <div className="opeator">
+                            <div className="buied">已付款</div>
+                            <div className="check" onClick={cheackLogisti}>查看物流</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Fragment>
+                );
               })) ||
               (all && (
                 <Fragment>
@@ -265,9 +333,9 @@ const Order: React.FC<Props> = props => {
                         <div className="pTitle">{item.goods.title}</div>
                         <div className="pPrice">￥{item.price}</div>
                         <div className="warn">举报违规</div>
-                        <Link to={'/orderDetail/'+item.id} className="order_detail">
+                        <Link to={'/orderDetail/' + item.id} className="order_detail">
                           <div>订单详情</div>
-                          </Link>
+                        </Link>
                         {item.status === 1 && (
                           <div className="opeator">
                             <div
@@ -283,6 +351,7 @@ const Order: React.FC<Props> = props => {
                         {item.status === 2 && (
                           <div className="opeator">
                             <div className="buied">已付款</div>
+                            <div className="check" onClick={cheackLogisti}>查看物流</div>
                           </div>
                         )}
                       </div>
@@ -324,9 +393,9 @@ const Order: React.FC<Props> = props => {
                         <div className="pTitle">{item.goods.title}</div>
                         <div className="pPrice">￥{item.price}</div>
                         <div className="warn">举报违规</div>
-                        <Link to={'/orderDetail/'+item.id} className="order_detail">
+                        <Link to={'/orderDetail/' + item.id} className="order_detail">
                           <div>订单详情</div>
-                          </Link>
+                        </Link>
                         {item.status === 1 && (
                           <div className="opeator">
                             <div className="buy">付款</div>
@@ -336,6 +405,7 @@ const Order: React.FC<Props> = props => {
                         {item.status === 2 && (
                           <div className="opeator">
                             <div className="buied">已付款</div>
+                            <div className="check" onClick={cheackLogisti}>查看物流</div>
                           </div>
                         )}
                       </div>

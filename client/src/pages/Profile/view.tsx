@@ -31,20 +31,12 @@ const Profile: React.FC = () => {
   }, []);
   useEffect(() => {
     collectList();
-    console.log(index);
   }, [index]);
 
   function len(parm: any) {
     setLength(parm);
   }
 
-  //获取用户信息
-  async function userInfo() {
-    const data = await getUserInfo();
-    if (data) {
-      dispatch(actions.setUserInfo(data));
-    }
-  }
 
   //获取发布列表
   async function publishList() {
