@@ -10,10 +10,8 @@ import com.bs.common.jwt.Authentication;
 import com.bs.common.jwt.JwtUtil;
 import com.bs.common.utils.Page;
 import com.bs.common.utils.R;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -128,6 +126,14 @@ public class GoodsController extends BaseController {
         return R.putSuccess();
     }
 
+    @DeleteMapping("/{id}")
+    @Authentication(isAdmin = true)
+    @ApiResponse(code = 200, message = "是否删除成功")
+    @ApiOperation(value = "管理员删除商品", notes = "管理员在后台删除商品")
+    public R<Boolean> delete(@PathVariable("id") String id) {
+        goodsService.removeById(id);
+        return R.deleteSuccess();
+    }
 
 
     @Authentication

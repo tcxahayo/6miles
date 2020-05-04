@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -88,6 +89,15 @@ public class SysUserController extends BaseController {
         result.setSize(size);
         result.setList(pageResult.getRecords());
         return R.selectSuccess(result);
+    }
+
+    @DeleteMapping("/{id}")
+    @Authentication(isAdmin = true)
+    @ApiResponse(code = 200, message = "是否删除成功")
+    @ApiOperation(value = "管理员删除用户", notes = "管理员在后台删除用户")
+    public R<Boolean> delUser(@PathVariable("id") String id) {
+        sysUserService.removeById(id);
+        return R.deleteSuccess();
     }
 
     @Authentication
