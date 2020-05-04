@@ -54,19 +54,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              name: 'category',
-              path: '/category',
-              icon: 'bars',
-              component: './Category',
+              redirect: '/user-list',
             },
             {
               name: 'list.user-list',
@@ -81,10 +69,10 @@ export default defineConfig({
               component: './GoodsList',
             },
             {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list',
-              component: './ListTableList',
+              name: 'category',
+              path: '/category',
+              icon: 'bars',
+              component: './Category',
             },
             {
               component: './404',
@@ -151,6 +139,7 @@ export default defineConfig({
   },
   proxy: {
     '/api/': {
+      // target: 'http://39.107.28.7:8080/',
       target: 'http://localhost:8080/',
       changeOrigin: true,
       pathRewrite: {

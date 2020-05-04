@@ -11,13 +11,12 @@ import ProLayout, {
 } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
 import { Link, useIntl, connect, Dispatch } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { getAuthorityFromRouter } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 
 const noMatch = (
   <Result
@@ -56,31 +55,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     return Authorized.check(item.authority, localItem, null) as MenuDataItem;
   });
 
-const defaultFooterDom = (
-  <DefaultFooter
-    copyright="2019 蚂蚁金服体验技术部出品"
-    links={[
-      {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
-        blankTarget: true,
-      },
-      {
-        key: 'github',
-        title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
-    ]}
-  />
-);
+const defaultFooterDom = <DefaultFooter copyright="2020 6Miles毕业设计" links={[]} />;
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
@@ -124,10 +99,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     <ProLayout
       logo={logo}
       formatMessage={formatMessage}
-      menuHeaderRender={(logoDom, titleDom) => (
+      menuHeaderRender={(logoDom) => (
         <Link to="/">
           {logoDom}
-          {titleDom}
+          <h1>6Miles</h1>
         </Link>
       )}
       onCollapse={handleMenuCollapse}

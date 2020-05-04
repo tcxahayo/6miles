@@ -13,3 +13,9 @@ export async function goodsEdit(params: TableListItem): Promise<Response> {
     method: 'put',
   });
 }
+
+export async function del(id: string): Promise<Response> {
+  return request(`/api/goods/${id}`, {
+    method: 'delete',
+  });
+}

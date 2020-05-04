@@ -81,23 +81,39 @@ const EditForm: React.FC<Props> = (props) => {
           desc: value?.desc,
         }}
       >
-        <Form.Item label="标题" name="title">
+        <Form.Item
+          label="标题"
+          rules={[{ required: true, message: '标题不能为空', whitespace: true }]}
+          name="title"
+        >
           <Input placeholder="商品标题" />
         </Form.Item>
-        <Form.Item name="category" label="分类">
+        <Form.Item
+          name="category"
+          rules={[{ required: true, message: '分类不能为空', whitespace: true }]}
+          label="分类"
+        >
           <Cascader
             fieldNames={{ label: 'title', value: 'id', children: 'children' }}
             options={category}
             allowClear={false}
           />
         </Form.Item>
-        <Form.Item label="价格" name="price">
+        <Form.Item
+          label="价格"
+          rules={[{ required: true, message: '价格不能为空', whitespace: true }]}
+          name="price"
+        >
           <Input placeholder="商品价格" />
         </Form.Item>
         <Form.Item label="描述" name="desc">
           <Input placeholder="商品描述" />
         </Form.Item>
-        <Form.Item label="图片">
+        <Form.Item
+          label="图片"
+          name=""
+          rules={[{ required: true, message: '标题不能为空', whitespace: true }]}
+        >
           <Upload
             fileList={images as any[]}
             onChange={({ fileList, file }) => {

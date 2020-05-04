@@ -1,12 +1,12 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { useState, useRef } from 'react';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { Avatar, Button } from 'antd';
-import { EditFilled } from '@ant-design/icons';
+import { Avatar, Button, message, Modal } from 'antd';
+import { EditFilled, DeleteFilled, WarningFilled } from '@ant-design/icons';
 import EditForm from './components/EditForm';
 
 import { TableListItem } from './data.d';
-import { query } from './service';
+import { query, del } from './service';
 
 export default () => {
   const [edit, setEdit] = useState<TableListItem | null>();
@@ -55,12 +55,36 @@ export default () => {
       valueType: 'option',
       align: 'center',
       render: (_, record) => (
-        <Button type="link" onClick={() => setEdit(record)} icon={<EditFilled />}>
-          编辑
-        </Button>
+        <>
+          <Button type="link" onClick={() => setEdit(record)} icon={<EditFilled />}>
+            编辑
+          </Button>
+          <Button type="link" onClick={() => delUser(record.id)} danger icon={<DeleteFilled />}>
+            删除
+          </Button>
+        </>
       ),
     },
   ];
+
+  function delUser(id: string) {
+    Modal.confirm({
+      content: '确定删除该用户？删除后不可恢复',
+      icon: <WarningFilled />,
+      okText: '删除',
+      onOk: async () => {
+        const result = await del(id);
+        if (result.data) {
+          message.success('删除成功！');
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        } else {
+          message.error(`删除失败：${result.msg}`);
+        }
+      },
+    });
+  }
 
   function editCallback() {
     setEdit(null);

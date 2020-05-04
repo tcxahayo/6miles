@@ -13,3 +13,9 @@ export async function update(params: UpdateParams): Promise<Response> {
     method: 'put',
   });
 }
+
+export async function del(id: string): Promise<Response> {
+  return request(`/api/user/${id}`, {
+    method: 'delete',
+  });
+}

@@ -1,12 +1,12 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { useState, useEffect, useRef } from 'react';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { Avatar, Button, message } from 'antd';
-import { EditFilled } from '@ant-design/icons';
+import { Avatar, Button, message, Modal } from 'antd';
+import { EditFilled, DeleteFilled, WarningFilled } from '@ant-design/icons';
 
 import EditForm from './components/EditForm';
 import { TableListItem } from './data.d';
-import { query, goodsEdit } from './service';
+import { query, goodsEdit, del } from './service';
 import { query as categotyQuery } from '../Category/service';
 import { Category } from '../Category/data.d';
 
@@ -80,12 +80,36 @@ export default () => {
       valueType: 'option',
       align: 'center',
       render: (_, record) => (
-        <Button type="link" onClick={() => setEdit(record)} icon={<EditFilled />}>
-          编辑
-        </Button>
+        <>
+          <Button type="link" onClick={() => setEdit(record)} icon={<EditFilled />}>
+            编辑
+          </Button>
+          <Button type="link" onClick={() => delGoods(record.id)} danger icon={<DeleteFilled />}>
+            删除
+          </Button>
+        </>
       ),
     },
   ];
+
+  function delGoods(id: string) {
+    Modal.confirm({
+      content: '确定删除该商品？删除后不可恢复',
+      icon: <WarningFilled />,
+      okText: '删除',
+      onOk: async () => {
+        const result = await del(id);
+        if (result.data) {
+          message.success('删除成功！');
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        } else {
+          message.error(`删除失败：${result.msg}`);
+        }
+      },
+    });
+  }
 
   async function update(item: TableListItem) {
     setUpdateLoading(true);
