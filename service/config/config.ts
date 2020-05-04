@@ -139,8 +139,7 @@ export default defineConfig({
   },
   proxy: {
     '/api/': {
-      // target: 'http://39.107.28.7:8080/',
-      target: 'http://localhost:8080/',
+      target: 'http://39.107.28.7:8080/',
       changeOrigin: true,
       pathRewrite: {
         '^/api/': '',
