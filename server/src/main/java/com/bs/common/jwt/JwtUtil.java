@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.bs.system.entity.SysUser;
 
 import java.util.Date;
 
@@ -27,12 +28,13 @@ public class JwtUtil {
      * @param account 账户
      * @param userId 用户id
      */
-    public static void verify(String token, String account, String userId) throws JWTVerificationException {
+    public static void verify(String token, String account, String userId, Integer userType) throws JWTVerificationException {
         //根据密码生成JWT效验器
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         JWTVerifier verifier = JWT.require(algorithm)
                 .withClaim("account", account)
                 .withClaim("userId", userId)
+                .withClaim("type", userType.toString())
                 .build();
         verifier.verify(token);
     }
@@ -69,19 +71,57 @@ public class JwtUtil {
     }
 
     /**
-     * 生成token签名EXPIRE_TIME 分钟后过期
+     * 获取token中包含的用户类型
+     * @param token token
+     * @return 用户id
+     */
+    public static Integer getUserType(String token) {
+        // 兼容之前签发的token
+        String type = JwtUtil.getClaimInfo(token, "type");
+        if (type == null) {
+            return 1;
+        }
+        return Integer.parseInt(type);
+    }
+
+    /**
+     * 生成普通用户的token签名，EXPIRE_TIME 分钟后过期
      *
      * @param account 账户名
      * @param userId 用户id
      * @return 加密的token
      */
     public static String sign(String account, String userId) {
+        return JwtUtil.createSign(account, userId, SysUser.USER_NORMAL);
+    }
+
+    /**
+     * 生成管理员的token签名，EXPIRE_TIME 分钟后过期
+     *
+     * @param account 账户名
+     * @param userId 用户id
+     * @return 加密的token
+     */
+    public static String adminSign(String account, String userId) {
+        return JwtUtil.createSign(account, userId, SysUser.USER_ADMIN);
+    }
+
+    /**
+     * 生成token签名EXPIRE_TIME 分钟后过期
+     * @param account 账户名
+     * @param userId 用户id
+     * @param type 用户类型
+     * @return 加密的token
+     */
+    private static String createSign(String account, String userId, Integer type) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         // 附带username信息
+        // withClaim只能存放String类型数据
         return JWT.create()
                 .withClaim("account", account)
                 .withClaim("userId", userId)
+                .withClaim("type", type.toString())
                 .withExpiresAt(date)
                 .sign(algorithm);
     }

@@ -2,6 +2,7 @@ package com.bs.bus.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bs.bus.entity.Category;
 import com.bs.bus.mapper.CategoryMapper;
 import com.bs.bus.service.ICategoryService;
@@ -27,11 +28,28 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public void addCategory(CategoryVo categoryVo) throws Exception {
         Category category = new Category();
+        categoryVo.setId(null);
         BeanUtils.copyProperties(categoryVo, category);
         boolean result = this.save(category);
         if (!result) {
             throw new GlobalException("添加失败");
         }
+    }
+
+    @Override
+    public void updateCategory(CategoryVo categoryVo) throws Exception {
+        String id = categoryVo.getId();
+        Category category = this.getById(id);
+        category.setSort(categoryVo.getSort());
+        category.setIcon(categoryVo.getIcon());
+        category.setTitle(categoryVo.getTitle());
+        this.updateById(category);
+    }
+
+    @Override
+    public void deleteCategory(String id) throws Exception {
+        Wrapper<Category> wrapper = new UpdateWrapper<Category>().eq("id", id).or().eq("parentId", id);
+        this.remove(wrapper);
     }
 
     @Override

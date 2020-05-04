@@ -3,6 +3,7 @@ package com.bs.common.jwt;
 import com.bs.common.constants.CommonConstant;
 import com.bs.common.exception.AuthenticationException;
 import com.bs.common.exception.GlobalException;
+import com.bs.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -48,9 +49,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (userId == null) {
             throw new AuthenticationException("身份校验失败");
         }
+        // 检查token类型
+        Integer userType = JwtUtil.getUserType(token);
+        if (authentication.isAdmin() && SysUser.USER_NORMAL.equals(userType)) {
+            throw new AuthenticationException("身份校验失败");
+        }
         // 校验token是否正确
         try {
-            JwtUtil.verify(token, account, userId);
+            JwtUtil.verify(token, account, userId, userType);
         } catch (Exception e) {
             throw new AuthenticationException("身份校验失败");
         }

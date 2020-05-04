@@ -45,13 +45,14 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     public void updateGoodsInfo(Goods goods) throws Exception {
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>().eq("id", goods.getId()).eq("userId", goods.getUserId());
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>().eq("id", goods.getId());
         Goods oldGoods = this.getOne(queryWrapper);
         if (ObjectUtils.isEmpty(oldGoods)) {
             throw new GlobalException("商品信息不存在");
         }
         goods.setCreateDate(oldGoods.getCreateDate());
         goods.setStatus(oldGoods.getStatus());
+        goods.setUserId(oldGoods.getUserId());
         this.updateById(goods);
     }
 

@@ -14,6 +14,9 @@ import javax.validation.constraints.Size;
 @Setter
 @ApiModel
 public class UserEditVo {
+
+    private String id;
+
     @ApiModelProperty("头像")
     @NotBlank(message = "头像不能为空")
     private String avatar;

@@ -4,12 +4,15 @@ import com.bs.bus.entity.Category;
 import com.bs.bus.service.ICategoryService;
 import com.bs.bus.vo.CategoryVo;
 import com.bs.common.base.BaseController;
+import com.bs.common.exception.GlobalException;
+import com.bs.common.jwt.Authentication;
 import com.bs.common.utils.R;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,9 +45,26 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping
+    @Authentication(isAdmin = true)
     @ApiOperation(value = "添加商品分类", notes = "添加首页左侧商品分类")
     public R<Boolean> addCategory(@RequestBody @Valid CategoryVo categoryVo) throws Exception {
         categoryService.addCategory(categoryVo);
         return R.postSuccess();
+    }
+
+    @PutMapping
+    @Authentication(isAdmin = true)
+    @ApiOperation(value = "修改商品分类", notes = "修改首页左侧商品分类")
+    public R<Boolean> updateCategory(@RequestBody @Valid CategoryVo categoryVo) throws Exception {
+        categoryService.updateCategory(categoryVo);
+        return R.putSuccess();
+    }
+
+    @DeleteMapping("/{id}")
+    @Authentication(isAdmin = true)
+    @ApiOperation(value = "删除商品分类", notes = "删除首页左侧商品分类")
+    public R<Boolean> addCategory(@PathVariable("id") String id) throws Exception {
+        categoryService.deleteCategory(id);
+        return R.deleteSuccess();
     }
 }

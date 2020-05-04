@@ -31,7 +31,7 @@ public class LoginController  extends BaseController {
     @PostMapping()
     @ApiOperation(value = "用户登陆", notes = "用于用户登陆")
     public R<String> login(@RequestBody @Valid LoginVo loginVo) throws Exception {
-        String token = sysUserService.login(loginVo.getPhone(), loginVo.getPassword());
+        String token = sysUserService.login(loginVo.getPhone(), loginVo.getPassword(), loginVo.getType());
         return R.success(token, "登陆成功");
     }
 

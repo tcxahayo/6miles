@@ -25,6 +25,20 @@ public interface ICategoryService extends IService<Category> {
     void addCategory(CategoryVo categoryVo) throws Exception;
 
     /**
+     * 修改分类
+     * @param categoryVo 分类vo
+     * @throws Exception
+     */
+    void updateCategory(CategoryVo categoryVo) throws Exception;
+
+    /**
+     * 删除分类
+     * @param id
+     * @throws Exception
+     */
+    void deleteCategory(String id) throws Exception;
+
+    /**
      * 查询树级分类
      * @return 树分类
      * @throws GlobalException 自定义异常

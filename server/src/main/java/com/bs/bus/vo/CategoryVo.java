@@ -13,9 +13,15 @@ import javax.validation.constraints.NotBlank;
 @ApiModel
 public class CategoryVo {
 
+    private String id;
+
     @ApiModelProperty("父id")
     @ApiParam("父id，为null时为一级菜单")
     private String parentId;
+
+    @ApiModelProperty("父标题")
+    @ApiParam("父标题，为null时为root")
+    private String parentTitle;
 
     @NotBlank(message = "标题不能为空")
     @ApiModelProperty("标题")

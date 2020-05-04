@@ -1,6 +1,5 @@
 package com.bs.bus.controller;
 
-
 import com.bs.bus.entity.Goods;
 import com.bs.bus.service.ICollectService;
 import com.bs.bus.service.IGoodsService;
@@ -23,7 +22,6 @@ import com.bs.common.base.BaseController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,13 +122,12 @@ public class GoodsController extends BaseController {
     @Authentication
     @PutMapping("/{id}")
     @ApiOperation(value = "修改商品", notes = "用户修改商品信息")
-    public R<Boolean> update(@PathVariable("id") String id, @Valid @RequestBody Goods goods, HttpServletRequest request) throws Exception {
-        String userId = this.getUserIdByToken(request);
-        goods.setUserId(userId);
+    public R<Boolean> update(@PathVariable("id") String id, @Valid @RequestBody Goods goods) throws Exception {
         goods.setId(id);
         goodsService.updateGoodsInfo(goods);
         return R.putSuccess();
     }
+
 
 
     @Authentication

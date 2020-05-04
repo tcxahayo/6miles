@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String login(String phone, String password) throws Exception {
+    public String login(String phone, String password, Integer type) throws Exception {
         Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().eq("phone", phone);
         SysUser user = this.getOne(wrapper);
         if (user == null) {
@@ -56,6 +56,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         String md5Password = MD5Util.encryption(password + user.getSalt());
         if (!StringUtils.equals(md5Password, user.getPassword())) {
             throw new GlobalException("用户名或密码不正确");
+        }
+        if (SysUser.USER_ADMIN.equals(type)) {
+            if (user.getType().equals(SysUser.USER_ADMIN)) {
+                return JwtUtil.adminSign(phone, user.getId());
+            } else {
+                throw new GlobalException("用户名或密码不正确");
+            }
         }
         return JwtUtil.sign(phone, user.getId());
     }

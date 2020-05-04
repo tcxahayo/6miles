@@ -33,6 +33,12 @@ public class Category extends BaseEntity {
     private String parentId;
 
     /**
+     * 父标题
+     */
+    @TableField("parentTitle")
+    private String parentTitle;
+
+    /**
      * 标题
      */
     private String title;

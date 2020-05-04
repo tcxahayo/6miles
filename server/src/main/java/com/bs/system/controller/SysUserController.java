@@ -1,6 +1,9 @@
 package com.bs.system.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bs.common.base.BaseController;
 import com.bs.common.exception.GlobalException;
 import com.bs.common.jwt.Authentication;
@@ -13,11 +16,9 @@ import com.bs.system.vo.RegisterVo;
 import com.bs.system.vo.UpdatePasswordVo;
 import com.bs.system.vo.UserEditVo;
 import com.bs.system.vo.UserVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -50,11 +51,43 @@ public class SysUserController extends BaseController {
     }
 
     @GetMapping
-    @Authentication
+    @Authentication(isAdmin = true)
     @ApiOperation(value = "查询所有用户", notes = "查询所有用户")
-    public R<List<SysUser>> list() throws Exception {
-        List<SysUser> users = sysUserService.list();
-        return R.selectSuccess(users);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", required = true, paramType = "query", dataType="Integer"),
+            @ApiImplicitParam(name = "size", value = "条数", required = true, paramType = "query", dataType="Integer"),
+            @ApiImplicitParam(name = "phone", value = "账户", paramType = "query"),
+            @ApiImplicitParam(name = "email", value = "邮箱", paramType = "query"),
+            @ApiImplicitParam(name = "nickname", value = "昵称", paramType = "query"),
+    })
+    public R<com.bs.common.utils.Page<List<SysUser>>> list(
+            String phone,
+            String email,
+            String nickname,
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size) throws Exception {
+
+        Page<SysUser> p = new Page<>(page, size);
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNoneBlank(phone)) {
+            wrapper.eq("phone", phone);
+        }
+        if (StringUtils.isNoneBlank(email)) {
+            wrapper.eq("email", email);
+        }
+        if (StringUtils.isNoneBlank(nickname)) {
+            wrapper.like("nickname", nickname);
+        }
+
+        Page<SysUser> pageResult = sysUserService.page(p, wrapper);
+
+        com.bs.common.utils.Page<List<SysUser>> result = new com.bs.common.utils.Page<List<SysUser>>();
+        result.setTotalSize((int)pageResult.getTotal());
+        result.setTotalPage((int)pageResult.getPages());
+        result.setPage(page);
+        result.setSize(size);
+        result.setList(pageResult.getRecords());
+        return R.selectSuccess(result);
     }
 
     @Authentication
@@ -109,6 +142,15 @@ public class SysUserController extends BaseController {
     public R<Boolean> infoEdit(HttpServletRequest request, @RequestBody @Valid UserEditVo userEditVo) throws Exception {
         String id = this.getUserIdByToken(request);
         sysUserService.updateInfo(id, userEditVo);
+        return R.putSuccess(true);
+    }
+
+    @PutMapping("/info/admin")
+    @Authentication(isAdmin = true)
+    @ApiResponse(code = 200, message = "是否修改成功")
+    @ApiOperation(value = "管理员修改用户资料", notes = "管理员在后台修改用户资料")
+    public R<Boolean> infoEditAdmin(@RequestBody @Valid UserEditVo userEditVo) throws Exception {
+        sysUserService.updateInfo(userEditVo.getId(), userEditVo);
         return R.putSuccess(true);
     }
 }

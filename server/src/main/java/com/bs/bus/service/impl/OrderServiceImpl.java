@@ -103,6 +103,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional
     public void orderCancel(String number, String userId) throws Exception {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<Order>().eq("number", number).eq("userId", userId);
         Order order = this.getOne(queryWrapper);
@@ -116,6 +117,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         boolean result = this.updateById(order);
         if (!result) {
             throw new GlobalException("订单取消失败，请稍后再试");
+        }
+        QueryWrapper<Goods> wrapper = new QueryWrapper<Goods>().eq("id", order.getGoodsId());
+        Goods goods = goodsService.getOne(wrapper);
+        goods.setStatus(Goods.STATUS_NORMAL);
+        boolean updateResult = goodsService.updateById(goods);
+        if (!updateResult) {
+            throw new GlobalException("订单支付失败，请稍后再试");
         }
     }
 

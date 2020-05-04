@@ -24,4 +24,14 @@ public class BaseController {
         return userId;
     }
 
+    /**
+     * 获取toke中包含的用户类型
+     * @param request 请求
+     * @return 用户类型
+     */
+    protected Integer getUserTypeByToken(HttpServletRequest request) {
+        String token = request.getHeader(CommonConstant.AUTHORIZATION_FLAG);
+        return JwtUtil.getUserType(token);
+    }
+
 }

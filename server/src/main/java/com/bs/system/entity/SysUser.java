@@ -30,6 +30,8 @@ public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     public static final String defaultAvatar = "http://182.92.210.231:81/default.png";
+    public static final Integer USER_NORMAL = 1; // 普通用户标示
+    public static final Integer USER_ADMIN = 2; // 管理员用户标示
 
     /**
      * 手机
@@ -60,6 +62,11 @@ public class SysUser extends BaseEntity {
      * 昵称
      */
     private String nickname;
+
+    /**
+     * 用户类型：1：普通用户，2：管理员
+     */
+    private Integer type;
 
     /**
      * 经度

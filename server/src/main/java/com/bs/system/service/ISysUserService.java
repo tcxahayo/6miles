@@ -21,10 +21,11 @@ public interface ISysUserService extends IService<SysUser> {
      * 登陆
      * @param phone 手机号
      * @param password 密码
+     * @param type 账户类型
      * @return token
      * @throws GlobalException 异常信息
      */
-    String login(String phone, String password) throws Exception;
+    String login(String phone, String password, Integer type) throws Exception;
 
     /**
      * 注册
