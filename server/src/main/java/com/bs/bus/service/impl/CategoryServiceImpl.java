@@ -29,8 +29,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public void addCategory(CategoryVo categoryVo) throws Exception {
         Category category = new Category();
         categoryVo.setId(null);
-        BeanUtils.copyProperties(categoryVo, category);
-        boolean result = this.save(category);
+        BeanUtils.copyProperties(categoryVo, category);//深拷贝
+        boolean result = this.save(category);//save--mybaties-plus的插入单条数据方法
         if (!result) {
             throw new GlobalException("添加失败");
         }
@@ -48,7 +48,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public void deleteCategory(String id) throws Exception {
-        Wrapper<Category> wrapper = new UpdateWrapper<Category>().eq("id", id).or().eq("parentId", id);
+        Wrapper<Category> wrapper = new UpdateWrapper<Category>().eq("id", id).or().eq("parentId", id);//eq是mybaties-plus的条件构造器，相当于=
         this.remove(wrapper);
     }
 
@@ -60,13 +60,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     private List<Category> treeCategoryData(String parentId, List<Category> categories) {
-        List<Category> parentList = categories.stream().filter(x -> parentId.equals(x.getParentId())).collect(Collectors.toList());
-        categories = categories.stream().filter(x -> !parentId.equals(x.getParentId())).collect(Collectors.toList());
+        List<Category> parentList = categories.stream().filter(x -> parentId.equals(x.getParentId())).collect(Collectors.toList());//stream数据处理，要使用filter等数据操作，前面就要有
+        categories = categories.stream().filter(x -> !parentId.equals(x.getParentId())).collect(Collectors.toList());//equals是否等于
         if (categories.size() == 0) {
             return parentList;
         }
         for (Category c : parentList) {
-            c.setChildren(treeCategoryData(c.getId(), categories));
+            c.setChildren(treeCategoryData(c.getId(), categories));//what is c？
         }
         return parentList;
     }

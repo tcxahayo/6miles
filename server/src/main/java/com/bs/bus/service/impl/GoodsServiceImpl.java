@@ -88,7 +88,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         Map<String, Object> params = new HashMap<>();
         params.put("goodsId", id);
         params.put("userId", userId);
-        params.put("index", 0);
+        params.put("index", 0);//index是什么呀？
         params.put("size", 1);
         List<Goods> list = goodsMapper.selectGoodsList(params);
         if (list.size() == 0) {
@@ -97,12 +97,14 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return list.get(0);
     }
 
+//selectGoodsListCount里面是空的呀
     @Override
     public Page<List<Goods>> getGoodsList(Map<String, Object> params, Integer page, Integer size) throws Exception {
         Integer totalCount = goodsMapper.selectGoodsListCount(params);
         params.put("index", (page - 1) * size);
         params.put("size", size);
         List<Goods> list = goodsMapper.selectGoodsList(params);
+//这里的set是从哪里来的呀？
 
         Page<List<Goods>> pageData = new Page<>();
         pageData.setPage(page);

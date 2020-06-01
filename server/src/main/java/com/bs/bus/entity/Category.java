@@ -18,9 +18,10 @@ import java.util.List;
  * @author tcx
  * @since 2020-02-07
  */
+ //@Data相当于@Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode这5个注解的合集
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)//这个注解的作用就是自动的给model bean实现equals方法和hashcode方法，有@Data就要有这个，不然数据库会出错
+@Accessors(chain = true)//通过该注解可以控制getter和setter方法的形式，chain 若为true，则setter方法返回当前对象
 @TableName("bus_category")
 public class Category extends BaseEntity {
 

@@ -31,7 +31,6 @@ import java.util.List;
 public class CategoryController extends BaseController {
 
     private ICategoryService categoryService;
-
     @Autowired
     public void setCategoryService(ICategoryService categoryService) {
         this.categoryService = categoryService;
@@ -47,7 +46,7 @@ public class CategoryController extends BaseController {
     @PostMapping
     @Authentication(isAdmin = true)
     @ApiOperation(value = "添加商品分类", notes = "添加首页左侧商品分类")
-    public R<Boolean> addCategory(@RequestBody @Valid CategoryVo categoryVo) throws Exception {
+    public R<Boolean> addCategory(@RequestBody @Valid CategoryVo categoryVo) throws Exception {  //R是什么东西啊？R是定义的返回值类型
         categoryService.addCategory(categoryVo);
         return R.postSuccess();
     }

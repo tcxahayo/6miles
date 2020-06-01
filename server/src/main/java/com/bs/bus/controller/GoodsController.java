@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * <p>
- * 商品表 前端控制器
+ * 商品表 前端控制器。。。其实就是controller
  * </p>
  *
  * @author tcx
@@ -40,6 +40,7 @@ public class GoodsController extends BaseController {
     private IGoodsService goodsService;
     private ICollectService collectService;
 
+//是为什么非要写setGoodsService，好吧，这里写了，下面才可以用的啦
     @Autowired
     public void setGoodsService(IGoodsService goodsService) {
         this.goodsService = goodsService;
@@ -57,6 +58,8 @@ public class GoodsController extends BaseController {
             @ApiImplicitParam(name = "categoryId", value = "分类id", paramType = "query"),
             @ApiImplicitParam(name = "keyword", value = "关键字", paramType = "query"),
     })
+    //paramType是swagger里面的，表示参数应该放在哪个位置=>  query-->请求参数的获取：@RequestParam(代码中接收注解),
+    
     public R<Page<List<Goods>>> list(
             HttpServletRequest request,
             String categoryId,
